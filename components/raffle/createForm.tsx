@@ -31,22 +31,33 @@ export default function CreateForm() {
   const [isPaidRaffle, setIsPaidRaffle] = useState(false);
   const [image, setImage] = useState(null);
   const handleImageUpload = (e: any) => {
-    setImage(e.target.files[0]);
+    setImage(e.target.files[0].name);
+    console.log(e.target.files[0]);
+    
   };
 
   return (
     <Card className="w-full max-w-md mx-auto thumbnail-shadow">
-      <CardHeader>
-        <CardTitle>Create Raffle Draw</CardTitle>
+      <CardHeader className="border-b bg-neutral-100">
+        <CardTitle>Create Raffle</CardTitle>
         <CardDescription>
           Fill out the details below to create a new raffle draw.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-3">
         <form className="grid gap-4">
           <div className="grid gap-2">
             <Label htmlFor="raffle-name">Raffle Name</Label>
             <Input id="raffle-name" placeholder="Enter raffle name" />
+          </div>
+
+          <div className="grid gap-2">
+            <Label htmlFor="raffle-description">Raffle Description</Label>
+            <Textarea
+              id="raffle-description"
+              placeholder="Describe the prize"
+              rows={3}
+            />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -89,14 +100,8 @@ export default function CreateForm() {
               </Popover>
             </div>
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="prize-description">Prize Description</Label>
-            <Textarea
-              id="prize-description"
-              placeholder="Describe the prize"
-              rows={3}
-            />
-          </div>
+
+          
 
           <div className="grid gap-2">
             <Label>Raffle Type</Label>
@@ -121,6 +126,7 @@ export default function CreateForm() {
               </div>
             </RadioGroup>
           </div>
+
           {isPaidRaffle && (
             <div className="grid gap-2">
               <Label htmlFor="price">Price</Label>
@@ -133,6 +139,7 @@ export default function CreateForm() {
               />
             </div>
           )}
+          
           <div className="grid gap-2">
             <Label htmlFor="image">Upload Image</Label>
             <Input

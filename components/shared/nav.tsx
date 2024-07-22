@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -23,7 +22,7 @@ const Nav = () => {
           <TwitterIcon />
         </Link>
         <Link
-          href="https://github.com/Drealdumore/MetaScraper"
+          href="https://github.com/Drealdumore/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex"
