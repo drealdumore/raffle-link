@@ -1,9 +1,16 @@
 import React from "react";
 
-const ErrorMessage  = ({ message }: { message: string }) => {
+interface Props {
+  message: string;
+  className?: string; 
+}
+
+const ErrorMessage: React.FC<Props> = ({ message, className }) => {
   return (
     <>
-      <div className="text-sm text-error border-[#f93a37]/20 bg-[#f93a37]/15 flex w-full items-start gap-2 rounded-md border p-1 bg-opacity-5">
+      <div
+        className={` ${className} px-1 text-sm text-error border-[#f93a37]/20 bg-[#f93a37]/15 flex w-full items-center gap-2 rounded-md border bg-opacity-5`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -24,7 +31,7 @@ const ErrorMessage  = ({ message }: { message: string }) => {
           ></path>
         </svg>
         <div className="pt-px">
-          <div className="text-white">
+          <div className="text-[#f10b0bc7]">
             <p>{message}</p>
           </div>
         </div>
@@ -33,4 +40,4 @@ const ErrorMessage  = ({ message }: { message: string }) => {
   );
 };
 
-export default ErrorMessage ;
+export default ErrorMessage;
