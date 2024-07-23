@@ -31,7 +31,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ClerkProvider>
-        <body className={`${calSans.variable} ${BDOG.variable}  ${inter.className}`}>
+        <body
+          className={`${calSans.variable} ${BDOG.variable}  ${inter.className}`}
+        >
           <Nav />
           {children}
         </body>

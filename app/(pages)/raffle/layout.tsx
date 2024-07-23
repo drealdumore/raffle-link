@@ -11,7 +11,7 @@ export default function RaffleLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="mx-auto my-16 flex max-w-xl flex-col items-center gap-4">
+    <div className="mx-auto my-16 h-screen flex max-w-xl flex-col items-center gap-4">
       {children}
     </div>
   );

@@ -28,13 +28,7 @@ const Header = () => {
         own raffle draws!
       </h2>
       {!join ? (
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 1, y: 50 }}
-          transition={{ duration: 5 }}
-          className="mx-auto mt-9 flex items-center justify-center"
-        >
+        <div className="mx-auto mt-9 flex max-w-fit space-x-4 items-center gap-3 justify-center">
           <Link
             className="rounded-lg mx-auto max-w-fit border px-6 py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-neutral-200 disabled:bg-blue-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 bg-blue-500 text-white hover:bg-blue-600"
             href="/raffle/new"
@@ -47,12 +41,12 @@ const Header = () => {
           >
             Join a Raffle
           </button>
-        </motion.div>
+        </div>
       ) : (
         <motion.div
-          initial={{ opacity: 0, scale: 0}}
+          initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 5 }}
+          transition={{ duration: 0.5 }}
           className="mt-9 mx-auto flex gap-3 justify-center items-center"
         >
           <JoinInput />

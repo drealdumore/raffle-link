@@ -81,3 +81,16 @@
     0 0 0 3px #f8fafc, 0 0 0 3.5px #f1f5f9,
     0 10px 15px -3px rgb(59 130 246 / 5%), 0 4px 6px -4px rgb(59 130 246 / 5%);
 }
+
+Label {
+  font-family: var(--font-bdog);
+  /* font-family: 'Courier New', Courier, monospace; */
+}
+
+.custom {
+  @apply bg-transparent hover:bg-gray-900-5 hover:ring-2 hover:ring-gray-900-5;
+}
+
+::placeholder {
+  font-family: var(--font-bdog);
+}

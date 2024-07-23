@@ -10,7 +10,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import {
   Popover,
   PopoverTrigger,
@@ -20,12 +20,9 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
+import { Input } from "../ui/input";
+import { DatePickerWithRange } from "./datePicker";
 
 export default function CreateForm() {
   const [isPaidRaffle, setIsPaidRaffle] = useState(false);
@@ -33,12 +30,11 @@ export default function CreateForm() {
   const handleImageUpload = (e: any) => {
     setImage(e.target.files[0].name);
     console.log(e.target.files[0]);
-    
   };
 
   return (
-    <Card className="w-full max-w-md mx-auto thumbnail-shadow">
-      <CardHeader className="border-b bg-neutral-100">
+    <Card className="w-full max-w-md mx-auto bg-white/20 ring-4 ring-gray-900/5">
+      <CardHeader className="border-b">
         <CardTitle>Create Raffle</CardTitle>
         <CardDescription>
           Fill out the details below to create a new raffle draw.
@@ -46,28 +42,37 @@ export default function CreateForm() {
       </CardHeader>
       <CardContent className="pt-3">
         <form className="grid gap-4">
+          <DatePickerWithRange />
+
           <div className="grid gap-2">
             <Label htmlFor="raffle-name">Raffle Name</Label>
-            <Input id="raffle-name" placeholder="Enter raffle name" />
+            <Input
+              className="custom"
+              id="raffle-name"
+              placeholder="Enter raffle name"
+            />
           </div>
 
           <div className="grid gap-2">
             <Label htmlFor="raffle-description">Raffle Description</Label>
             <Textarea
               id="raffle-description"
-              placeholder="Describe the prize"
+              placeholder="Describe the raffle"
               rows={3}
+              className="custom"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="start-date">Start Date</Label>
+              <Label className="font-bdog" htmlFor="start-date">
+                Start Date
+              </Label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="flex-col items-start w-full h-auto"
+                    className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
                   >
                     <span className="font-semibold uppercase text-[0.65rem]">
                       Start Date
@@ -86,7 +91,7 @@ export default function CreateForm() {
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className="flex-col items-start w-full h-auto"
+                    className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
                   >
                     <span className="font-semibold uppercase text-[0.65rem]">
                       End Date
@@ -100,8 +105,6 @@ export default function CreateForm() {
               </Popover>
             </div>
           </div>
-
-          
 
           <div className="grid gap-2">
             <Label>Raffle Type</Label>
@@ -128,21 +131,21 @@ export default function CreateForm() {
           </div>
 
           {isPaidRaffle && (
-            <div className="grid gap-2">
+            <div className="grid gap-2 transition-all">
               <Label htmlFor="price">Price</Label>
-              <Input id="price" type="number" placeholder="Enter price" />
-              <Label htmlFor="price-description">Price Description</Label>
-              <Textarea
-                id="price-description"
-                placeholder="Describe the price"
-                rows={3}
+              <Input
+                className="bg-transparent"
+                id="price"
+                type="number"
+                placeholder="Enter price"
               />
             </div>
           )}
-          
+
           <div className="grid gap-2">
             <Label htmlFor="image">Upload Image</Label>
             <Input
+              className="bg-transparent"
               id="image"
               type="file"
               accept="image/*"
