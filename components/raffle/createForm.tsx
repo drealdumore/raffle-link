@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { addDays, format } from "date-fns";
 import {
   Card,
   CardHeader,
@@ -27,13 +28,32 @@ import { DatePickerWithRange } from "./datePicker";
 export default function CreateForm() {
   const [isPaidRaffle, setIsPaidRaffle] = useState(false);
   const [image, setImage] = useState(null);
+  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 5));
+
   const handleImageUpload = (e: any) => {
     setImage(e.target.files[0].name);
     console.log(e.target.files[0]);
   };
 
+  const handleStartDateChange = (date: Date) => {
+    setStartDate(date);
+
+    if (date >= endDate) {
+      setEndDate(addDays(date, 1));
+    }
+  };
+
+  const handleEndDateChange = (date: Date) => {
+    if (date > startDate) {
+      setEndDate(date);
+    } else {
+      alert("End date must be after start date");
+    }
+  };
+
   return (
-    <Card className="w-full max-w-md mx-auto bg-white/20 ring-4 ring-gray-900/5">
+    <Card className="md:w-full max-w-md mx-auto w-[95%]  bg-white/20 ring-4 ring-gray-900/5">
       <CardHeader className="border-b">
         <CardTitle>Create Raffle</CardTitle>
         <CardDescription>
@@ -42,8 +62,7 @@ export default function CreateForm() {
       </CardHeader>
       <CardContent className="pt-3">
         <form className="grid gap-4">
-          <DatePickerWithRange />
-
+          {/* Raffle title */}
           <div className="grid gap-2">
             <Label htmlFor="raffle-name">Raffle Name</Label>
             <Input
@@ -53,6 +72,7 @@ export default function CreateForm() {
             />
           </div>
 
+          {/* Raffle description */}
           <div className="grid gap-2">
             <Label htmlFor="raffle-description">Raffle Description</Label>
             <Textarea
@@ -63,6 +83,7 @@ export default function CreateForm() {
             />
           </div>
 
+          {/* Dates */}
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label className="font-bdog" htmlFor="start-date">
@@ -77,11 +98,23 @@ export default function CreateForm() {
                     <span className="font-semibold uppercase text-[0.65rem]">
                       Start Date
                     </span>
-                    <span className="font-normal">4/2/2024</span>
+                    <span className="font-normal">
+                      {startDate ? (
+                        format(startDate, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="p-0 max-w-[276px]">
-                  <Calendar />
+                <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
+                  <Calendar
+                    mode="single"
+                    selected={startDate}
+                    // onSelect={setStartDate}
+                    onSelect={handleStartDateChange}
+                    required
+                  />
                 </PopoverContent>
               </Popover>
             </div>
@@ -96,16 +129,29 @@ export default function CreateForm() {
                     <span className="font-semibold uppercase text-[0.65rem]">
                       End Date
                     </span>
-                    <span className="font-normal">10/2/2024</span>
+                    <span className="font-normal">
+                      {endDate ? (
+                        format(endDate, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </span>
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="p-0 max-w-[276px]">
-                  <Calendar />
+                <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    // onSelect={setEndDate}
+                    onSelect={handleEndDateChange}
+                    required
+                  />
                 </PopoverContent>
               </Popover>
             </div>
           </div>
 
+          {/* Radio buttons */}
           <div className="grid gap-2">
             <Label>Raffle Type</Label>
             <RadioGroup
@@ -130,14 +176,15 @@ export default function CreateForm() {
             </RadioGroup>
           </div>
 
+          {/* Paid state */}
           {isPaidRaffle && (
             <div className="grid gap-2 transition-all">
               <Label htmlFor="price">Price</Label>
               <Input
                 className="bg-transparent"
                 id="price"
-                type="number"
-                placeholder="Enter price"
+                type="money"
+                placeholder="Enter amount"
               />
             </div>
           )}
@@ -152,13 +199,13 @@ export default function CreateForm() {
               onChange={handleImageUpload}
             />
             {image && (
-              <div className="flex justify-center">
+              <div className="flex justify-center max-w-auto">
                 <img
                   src={image}
                   alt="Uploaded Image"
                   width={200}
                   height={200}
-                  className="object-contain"
+                  className="object-contain border border-double rounded"
                 />
               </div>
             )}
