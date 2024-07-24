@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { addDays, format } from "date-fns";
 import {
   Card,
@@ -31,10 +31,6 @@ interface FormState {
   zodErrors: {
     raffleName?: string;
     raffleDescription?: string;
-    raffleType?: string;
-    price?: string;
-    // startDate?: string;
-    // endDate?: string;
   } | null;
   message: string | null;
 }
@@ -54,7 +50,8 @@ export default function CreateForm() {
   const [endDateValid, setEndDateValid] = useState("");
 
   const [formState, setFormState] = useState(INITIAL_STATE);
-  const [isFormValid, setIsFormValid] = useState(false);
+
+  console.log(formState);
 
   // const handleImageUpload = (e: any) => {
   //   setImage(URL.createObjectURL(e.target.files[0]));
@@ -82,6 +79,43 @@ export default function CreateForm() {
     }
   };
 
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    setLoading(true);
+
+    try {
+      const formData = {
+        title: "Grand Prize Giveaway",
+        description:
+          "Enter for a chance to win a $500 gift card! Don't miss out on this amazing opportunity.",
+        isPaid: true,
+        price: 10,
+        createdBy: "userId12345", // Replace with actual userId from authentication
+      };
+
+      console.log(formData);
+
+      const response = await fetch("/api/raffles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to create raffle");
+      }
+
+      const result = await response.json();
+      console.log("Raffle created successfully:", result);
+    } catch (error) {
+      console.error("Error creating raffle:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="md:w-full max-w-md mx-auto w-[95%] bg-white/20 ring-4 ring-gray-900/5">
       <CardHeader className="border-b">
@@ -91,7 +125,8 @@ export default function CreateForm() {
         </CardDescription>
       </CardHeader>
       <CardContent className="pt-3">
-        <form
+        <form className="grid gap-4" onSubmit={handleSubmit}>
+          {/* <form
           className="grid gap-4"
           action={async (formData: FormData) => {
             setLoading(true);
@@ -99,7 +134,7 @@ export default function CreateForm() {
             setFormState(result);
             setLoading(false);
           }}
-        >
+        > */}
           {/* Raffle title */}
           <div className="grid gap-2">
             <Label htmlFor="raffle-name">Raffle Name</Label>
@@ -255,12 +290,6 @@ export default function CreateForm() {
                 type="number"
                 placeholder="Enter amount"
               />
-              {formState.zodErrors?.price && (
-                <ErrorMessage
-                  message={formState.zodErrors?.price}
-                  className="p-0"
-                />
-              )}
             </div>
           )}
 
@@ -292,7 +321,7 @@ export default function CreateForm() {
           <button
             type="submit"
             disabled={loading}
-            className="h-10 font-cal truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center bg-black text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg disabled:bg-neutral-800 disabled:text-neutral-900 disabled:pointer-events-none disabled:cursor-not-allowed "
+            className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center bg-black text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
           >
             {loading && (
               <>
@@ -308,27 +337,5 @@ export default function CreateForm() {
         </form>
       </CardContent>
     </Card>
-  );
-}
-
-function QuestionMarkIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className="lucide lucide-circle-help h-4 w-4 text-gray-500"
-      data-state="closed"
-    >
-      <circle cx="12" cy="12" r="10"></circle>
-      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-      <path d="M12 17h.01"></path>
-    </svg>
   );
 }

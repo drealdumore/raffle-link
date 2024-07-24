@@ -1,15 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 
 const JoinInput = () => {
+  const [loading, setLoading] = useState(false);
+
   const searchAndRoute = () => {
     console.log("Search and route to the id");
+  };
+
+  const handleSearch = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    setLoading(true);
+    const id  = '66a004263f9646a15a7c6ee4'
+
+    try {
+      const response = await fetch(`/api/raffles/${id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        
+      });
+      if (!response.ok) {
+        throw new Error("Failed to GET raffle");
+      }
+
+      const result = await response.json();
+      console.log("Raffle gitten successfully:", result);
+    } catch (error) {
+      console.error("Error creating raffle:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="flex w-auto sm:items-center">
       <form
         className="relative w-full max-w-96 ring-4 ring-gray-900/5 rounded-lg"
-        onSubmit={searchAndRoute}
+        onSubmit={handleSearch}
       >
         <input
           className="placeholder:text-neutral-800  placeholder:font-light  w-full border appearance-none transition-all focus:bg-gray-900/5 bg-transparent text-secondary resize-none font-medium outline-primary placeholder:text-inherit placeholder:opacity-50 disabled:opacity-50 px-4 py-3 text-sm/tight rounded-lg pr-28"

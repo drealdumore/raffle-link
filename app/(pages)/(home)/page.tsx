@@ -8,19 +8,19 @@ import { useState } from "react";
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
-  const getAll = async () => {
-    try {
-      const res = await fetch("/api/raffles", {
-        method: "GET",
-      });
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.log("[raffles_GET]", error);
-    }
-  };
+  // const getAll = async () => {
+  //   try {
+  //     const res = await fetch("/api/raffles", {
+  //       method: "GET",
+  //     });
+  //     const data = await res.json();
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.log("[raffles_GET]", error);
+  //   }
+  // };
 
-  getAll();
+  // getAll();
 
   return (
     <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">

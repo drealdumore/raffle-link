@@ -32,6 +32,41 @@ export const GET = async (
   }
 };
 
+export const PATCH = async (
+  req: NextRequest,
+  { params }: { params: { raffleId: string } }
+) => {
+  try {
+    const { userId } = auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    await connectMongoDB();
+
+    const raffle = await Raffle.findByIdAndUpdate(params.raffleId);
+
+    if (!raffle) {
+      return new NextResponse(JSON.stringify({ message: "Raffle not found" }), {
+        status: 404,
+      });
+    }
+
+    await Raffle.findByIdAndDelete(raffle._id, {
+      new: true,
+      runValidators: true,
+    });
+
+    return new NextResponse(JSON.stringify({ message: "Product UPDATED" }), {
+      status: 200,
+    });
+  } catch (err) {
+    console.log("[raffleId_UPDATE]", err);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+};
+
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: { raffleId: string } }
@@ -48,15 +83,14 @@ export const DELETE = async (
     const raffle = await Raffle.findById(params.raffleId);
 
     if (!raffle) {
-      return new NextResponse(
-        JSON.stringify({ message: "Raffle not found" }),
-        { status: 404 }
-      );
+      return new NextResponse(JSON.stringify({ message: "Raffle not found" }), {
+        status: 404,
+      });
     }
 
     await Raffle.findByIdAndDelete(raffle._id);
 
-    return new NextResponse(JSON.stringify({ message: "Product deleted" }), {
+    return new NextResponse(JSON.stringify({ message: "Raffle deleted" }), {
       status: 200,
     });
   } catch (err) {

@@ -8,22 +8,6 @@ const raffleSchema = z.object({
   raffleDescription: z
     .string()
     .nonempty({ message: "Please provide a description for the raffle." }),
-  raffleType: z
-    .enum(["free", "paid"])
-    .default("free")
-    .refine((value) => value === "free" || value === "paid", {
-      message: "Please select a raffle type.",
-    }),
-  price: z
-    .string()
-    .nonempty({ message: "Please provide amount." }),
-  // startDate: z
-  //   .string()
-  //   .nonempty({ message: "Please select the start date for the raffle." }),
-  // endDate: z
-  //   .string()
-  //   .nonempty({ message: "Please select the end date for the raffle." }),
-  image: z.string().optional(),
 });
 
 export async function createRaffleAction(prevState: any, formData: FormData) {
@@ -32,11 +16,6 @@ export async function createRaffleAction(prevState: any, formData: FormData) {
   const validateFields = raffleSchema.safeParse({
     raffleName: formData.get("raffleName"),
     raffleDescription: formData.get("raffleDescription"),
-    // startDate: formData.get("startDate"),
-    // endDate: formData.get("endDate"),
-    raffleType: formData.get("raffleType"),
-    price: formData.get("price"),
-    image: formData.get("image"),
   });
 
   if (!validateFields.success) {
