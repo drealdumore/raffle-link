@@ -321,12 +321,12 @@ export default function CreateForm() {
           <button
             type="submit"
             disabled={loading}
-            className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center bg-black text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
+            className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center   bg-neutral-900   text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
           >
             {loading && (
               <>
                 <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                  <div className="w-3 h-3 absolute bg-black transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+                  <div className="w-3 h-3 absolute   bg-neutral-900   transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
                 </div>
               </>
             )}

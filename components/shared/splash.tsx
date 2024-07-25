@@ -13,7 +13,7 @@ const Splash = () => {
           RaffleLink is the Ultimate platform for creating and sharing your very
           own raffle draws!
         </p>
-        <button className="rounded-full bg-gray-800 px-10 py-2 font-medium text-white transition-colors hover:bg-black">
+        <button className="rounded-full bg-gray-800 px-10 py-2 font-medium text-white transition-colors hover:  bg-neutral-900  ">
           Get Started
         </button>
       </div>
