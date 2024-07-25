@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import JoinInput from "./joinInput";
-import Image from "next/image";
 
 const Header = () => {
   const [join, setJoin] = useState(false);
@@ -46,18 +45,21 @@ const Header = () => {
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.2 }}
           className="mt-9 mx-auto flex gap-3 justify-center items-center"
         >
           <JoinInput />
           <div
-            className="bg-blue-500 p-2 rounded-full cursor-pointer hover:ring-3 hover:rotate-90 transition-all ring-gray-900/5"
+            className="bg-blue-500 p-2 rounded-full cursor-pointer hover:ring-4  hover:ring-gray-900/5 transition-all ring-gray-900/5"
+            // className="bg-blue-500 p-2 rounded-full cursor-pointer hover:ring-3 hover:rotate-90 transition-all ring-gray-900/5"
             onClick={cancelJoinClick}
           >
             <CancelIcon />
           </div>
         </motion.div>
       )}
+
+      
     </div>
   );
 };

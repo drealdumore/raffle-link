@@ -1,10 +1,15 @@
-import Splash from '@/components/shared/splash'
-import React from 'react'
+import GetInTouch from "@/components/raffle/get";
+import Splash from "@/components/shared/splash";
+import React from "react";
 
 const page = () => {
   return (
-    <Splash/>
-  )
-}
+    <div className="w-[90%]">
+      <Splash />
 
-export default page
+      {/* <GetInTouch /> */}
+    </div>
+  );
+};
+
+export default page;
