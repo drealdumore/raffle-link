@@ -22,7 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { Input } from "../ui/input";
-import { createRaffleAction } from "@/app/actions/raffle-actions";
+import { createRaffleAction } from "@/app/actions/raffle.action";
 
 import ErrorMessage from "../shared/errorMessage";
 import { useAuth } from "@clerk/nextjs";
