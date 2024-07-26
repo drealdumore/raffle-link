@@ -20,11 +20,13 @@ const GetInTouch = () => {
   const [emailError, setEmailError] = useState("");
   const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [raffleId, setRaffleId] = useState('');
+  const [message, setMessage] = useState('');
 
-  const handleJoin = async () => {
+  const joinRaffle  = async () => {
     setLoading(true);
     // Call API to join raffle
-    const response = await fetch("/api/join-raffle", {
+    const response = await fetch("/api/raffles/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,6 +39,18 @@ const GetInTouch = () => {
     } else {
       alert("Error joining raffle. Please try again.");
     }
+
+    // try {
+    //   const res = await fetch('/api/raffle/join', {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ raffleId, name, email }),
+    //   });
+    //   const data = await res.json();
+    //   setMessage(data.message);
+    // } catch (error) {
+    //   setMessage('Error joining raffle');
+    // }
     setLoading(false);
   };
 
@@ -197,7 +211,7 @@ const GetInTouch = () => {
             </motion.button>
 
             <motion.button
-              onClick={handleJoin}
+              onClick={joinRaffle }
               disabled={loading}
               className="px-4 py-2 text-white bg-neutral-900 rounded-sm font-bdog truncate overflow-hidden gap-2 font-medium group flex items-center justify-center shadow-md shadow-black/5 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
               initial={{ x: -20, opacity: 0 }}
@@ -214,7 +228,8 @@ const GetInTouch = () => {
               <span className="ml-1">
                 {loading ? (
                   <span>
-                    Joining <span className="dot-pulse"></span>
+                    Joining
+                    {/* Joining <span className="dot-pulse"></span> */}
                   </span>
                 ) : (
                   "Join Raffle"

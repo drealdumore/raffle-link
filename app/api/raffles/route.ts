@@ -14,9 +14,9 @@ export const POST = async (req: NextRequest) => {
 
     await connectMongoDB();
 
-    const { title, description, isPaid, price } = await req.json();
+    const { title, description, startDate, endDate } = await req.json();
 
-    if (!title || !description || !isPaid ) {
+    if (!title || !description || !startDate || !endDate) {
       return new NextResponse("Not enough data to create a raffle", {
         status: 400,
       });
@@ -25,9 +25,10 @@ export const POST = async (req: NextRequest) => {
     const newRaffle = await Raffle.create({
       title,
       description,
-      isPaid,
-      price,
-      createdBy: userId
+      startDate,
+      endDate,
+      createdBy: userId,
+      participants: [],
     });
 
     await newRaffle.save();

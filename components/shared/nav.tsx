@@ -85,8 +85,8 @@ function LinkIcon() {
       fill="none"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className="h-6 w-6 text-neutral-800"
     >
       <path d="M9 17H7A5 5 0 0 1 7 7h2" />

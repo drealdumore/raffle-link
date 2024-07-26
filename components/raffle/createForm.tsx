@@ -25,6 +25,7 @@ import { Input } from "../ui/input";
 import { createRaffleAction } from "@/app/actions/raffle-actions";
 
 import ErrorMessage from "../shared/errorMessage";
+import { useAuth } from "@clerk/nextjs";
 
 interface FormState {
   data: any;
@@ -48,6 +49,13 @@ export default function CreateForm() {
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 5));
   const [endDateValid, setEndDateValid] = useState("");
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  // const [startDate, setStartDate] = useState("");
+  // const [endDate, setEndDate] = useState("");
+  const [message, setMessage] = useState("");
+  const { userId } = useAuth();
 
   const [formState, setFormState] = useState(INITIAL_STATE);
 
@@ -116,6 +124,23 @@ export default function CreateForm() {
     }
   };
 
+  const createRaffle = async () => {
+    try {
+      const res = await fetch("/api/raffle", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userId}`,
+        },
+        body: JSON.stringify({ title, description, startDate, endDate }),
+      });
+      const data = await res.json();
+      setMessage(`Raffle created with ID: ${data._id}`);
+    } catch (error) {
+      setMessage("Error creating raffle");
+    }
+  };
+
   return (
     <Card className="md:w-full max-w-md mx-auto w-[95%] bg-white/20 ring-4 ring-gray-900/5">
       <CardHeader className="border-b">
@@ -169,6 +194,19 @@ export default function CreateForm() {
               />
             )}
           </div>
+
+          {/* <input
+        type="datetime-local"
+        placeholder="Start Date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      <input
+        type="datetime-local"
+        placeholder="End Date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      /> */}
 
           {/* Dates */}
           <div className="grid gap-2">

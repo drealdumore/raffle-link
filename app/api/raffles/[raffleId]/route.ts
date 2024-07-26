@@ -3,6 +3,7 @@ import { connectMongoDB } from "@/app/utils/mongoConnect";
 import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
+// GET RAFFLE ::: FIND RAFFLE
 export const GET = async (
   req: NextRequest,
   { params }: { params: { raffleId: string } }
@@ -10,28 +11,24 @@ export const GET = async (
   try {
     await connectMongoDB();
 
+    if (!params.raffleId) {
+      return new NextResponse("Raffle ID is required", { status: 400 });
+    }
+
     const raffle = await Raffle.findById(params.raffleId);
 
     if (!raffle) {
-      return new NextResponse(
-        JSON.stringify({ message: "Raffle not found!" }),
-        { status: 404 }
-      );
+      return new NextResponse("Raffle not found!", { status: 404 });
     }
 
-    return new NextResponse(JSON.stringify(raffle), {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Methods": "GET",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
-    });
-  } catch (error) {
-    console.log("[raffleId_GET]", error);
+    return NextResponse.json(raffle, { status: 200 });
+  } catch (err) {
+    console.log("[raffles_search_GET]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
 
+// PATCH RAFFLE ::: UPDATE RAFFLE
 export const PATCH = async (
   req: NextRequest,
   { params }: { params: { raffleId: string } }
@@ -45,28 +42,41 @@ export const PATCH = async (
 
     await connectMongoDB();
 
-    const raffle = await Raffle.findByIdAndUpdate(params.raffleId);
+    const { title, description, startDate, endDate } = await req.json();
+
+    if (!title && !description && !startDate && !endDate) {
+      return new NextResponse("No data to update", { status: 400 });
+    }
+
+    const raffle = await Raffle.findById(params.raffleId);
 
     if (!raffle) {
-      return new NextResponse(JSON.stringify({ message: "Raffle not found" }), {
+      return new NextResponse("Raffle not found", {
         status: 404,
       });
     }
 
-    await Raffle.findByIdAndDelete(raffle._id, {
-      new: true,
-      runValidators: true,
-    });
+    if (raffle.createdBy !== userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
-    return new NextResponse(JSON.stringify({ message: "Product UPDATED" }), {
+    raffle.title = title || raffle.title;
+    raffle.description = description || raffle.description;
+    raffle.startDate = startDate || raffle.startDate;
+    raffle.endDate = endDate || raffle.endDate;
+
+    await raffle.save();
+
+    return new NextResponse(JSON.stringify({ message: "Raffle updated" }), {
       status: 200,
     });
   } catch (err) {
-    console.log("[raffleId_UPDATE]", err);
+    console.log("[raffleId_PATCH]", err);
     return new NextResponse("Internal error", { status: 500 });
   }
 };
 
+// DELETE RAFFLE ::: DELETE RAFFLE
 export const DELETE = async (
   req: NextRequest,
   { params }: { params: { raffleId: string } }
@@ -88,9 +98,13 @@ export const DELETE = async (
       });
     }
 
+    if (raffle.createdBy !== userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
     await Raffle.findByIdAndDelete(raffle._id);
 
-    return new NextResponse(JSON.stringify({ message: "Raffle deleted" }), {
+    return new NextResponse("Raffle deleted", {
       status: 200,
     });
   } catch (err) {

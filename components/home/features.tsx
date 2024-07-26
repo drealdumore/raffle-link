@@ -97,8 +97,8 @@ function LinkIcon() {
       fill="none"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className="pointer-events: none; width: 24px; height: 24px; "
     >
       <path d="M9 17H7A5 5 0 0 1 7 7h2"></path>
@@ -118,8 +118,8 @@ function QRIcon() {
       fill="none"
       stroke="currentColor"
       stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className="pointer-events: none; width: 24px; height: 24px; "
     >
       <rect width="5" height="5" x="3" y="3" rx="1"></rect>
