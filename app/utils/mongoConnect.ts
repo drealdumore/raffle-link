@@ -10,7 +10,8 @@ export const connectMongoDB = async (): Promise<void> => {
   }
 
   try {
-    await mongoose.connect(process.env.DATABASE_LOCAL_IP!);
+    await mongoose.connect(process.env.DATABASE_IP!);
+    // await mongoose.connect(process.env.DATABASE_LOCAL_IP!);
 
     isConnected = true;
     console.log("MongoDB is connected");

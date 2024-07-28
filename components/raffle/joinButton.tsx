@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const JoinButton = ({ joined, loading }: { joined: boolean, loading?: boolean }) => {
+const JoinButton = ({
+  joined,
+  loading,
+}: {
+  joined: boolean;
+  loading?: boolean;
+}) => {
   return (
     <motion.button
       className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed flex items-center min-h-10 rounded-full px-6 leading-none tracking-[0.0015rem] transition-[background-color,color] duration-500 ease-[cubic-bezier(.215,.61,.355,1)] overflow-hidden bg-neutral-900 text-gray-600 pointer-events-none"

@@ -1,9 +1,12 @@
-import React from 'react'
+import RaffleCard from "@/components/profile/raffleCard";
+import React from "react";
 
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <RaffleCard />
+    </div>
+  );
+};
 
-export default page
+export default page;

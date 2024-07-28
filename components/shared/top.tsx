@@ -7,21 +7,27 @@ const Nav = () => {
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
       <Link href="/">
-        <div className="text-xl select-none font-cal flex justify-center  gap-1 text-neutral-800">
+        <div className="text-xl font-cal flex justify-center  gap-1 text-neutral-800">
           <LinkIcon />
           <p>RaffleLink.</p>
         </div>
       </Link>
-
-      {/* TODO  - ADD THE CLERK USER ICON IF AUTHENTICATED OR CEREATE MY OWN */}
-      {/* DO NOT SHOW THE CREATE RAFFLE WHEN PATHNAME === '/SIGN-IN' && '/SIGN-UP */}
-
       <nav className="flex gap-6">
         <Link
-          href="/sign-in"
-          className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
+          href="https://twitter.com/drealdumore"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex"
         >
-          Create Raffle
+          <TwitterIcon />
+        </Link>
+        <Link
+          href="https://github.com/Drealdumore/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex"
+        >
+          <GithubIcon />
         </Link>
       </nav>
     </header>

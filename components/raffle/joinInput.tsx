@@ -20,6 +20,8 @@ const JoinInput = () => {
   const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(false);
   const [raffleId, setRaffleId] = useState("");
+  const [joining, setJoining] = useState(false);
+  const [checking, setChecking] = useState(false);
 
   const count = 200;
   const defaults = {
@@ -37,7 +39,6 @@ const JoinInput = () => {
       particleCount: Math.floor(count * particleRatio),
     });
   }
-
 
   const handleConfetti = () => {
     fire(0.25, {
@@ -64,13 +65,12 @@ const JoinInput = () => {
     });
   };
 
-
-
   useEffect(() => {
     const checkIfJoined = async () => {
       if (!isValidEmail(email)) return;
 
       setLoading(true);
+      setChecking(true);
 
       const response = await fetch(`/api/raffles/${raffleId}/check`, {
         method: "POST",
@@ -86,6 +86,7 @@ const JoinInput = () => {
         setMessage("You have already joined this raffle.");
       }
       setLoading(false);
+      setChecking(false);
     };
 
     checkIfJoined();
@@ -93,6 +94,7 @@ const JoinInput = () => {
 
   const joinRaffle = async () => {
     setLoading(true);
+    setJoining(true);
     const response = await fetch(`/api/raffles/${raffleId}/join`, {
       method: "POST",
       headers: {
@@ -111,6 +113,7 @@ const JoinInput = () => {
     }
 
     setLoading(false);
+    setJoining(false);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -153,7 +156,7 @@ const JoinInput = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="flex items-center space-x-2"
+          className="flex flex-col items-center mt-4 space-y-2"
           onKeyPress={handleKeyPress}
         >
           <div className="flex justify-between gap-3 items-center">
@@ -278,19 +281,17 @@ const JoinInput = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {/* {loading && (
-                <>
-                  <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                    <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                  </div>
-                </>
-              )}{" "}
-              {joined ? "Joined" : "Join Raffle"} */}
-              {loading && <LoadingIcon />} {joined ? "Joined" : loading ? "Checking..." : "Join Raffle"}
-
+              {loading && <LoadingIcon />}{" "}
+              {joined
+                ? "Joined"
+                : joining
+                ? "Joining..."
+                : checking
+                ? "Checking..."
+                : "Join Raffle"}
             </motion.button>
           </div>
-          {message && <p>{message}</p>}
+          {/* {message && <p>{message}</p>} */}
         </motion.div>
       )}
     </div>
