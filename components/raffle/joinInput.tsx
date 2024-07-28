@@ -1,11 +1,10 @@
 "use client";
 import { useState, useEffect, JSX, SVGProps } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import ErrorMessage from "../shared/errorMessage";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import JoinButton from "./joinButton";
 
 const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -21,7 +20,6 @@ const JoinInput = () => {
   const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(false);
   const [raffleId] = useState("66a004263f9646a15a7c6ee4");
-  const [showConfetti, setShowConfetti] = useState(false);
 
   const count = 200;
   const defaults = {
@@ -37,7 +35,6 @@ const JoinInput = () => {
   }
 
   const handleConfetti = () => {
-    setShowConfetti(true);
     fire(0.25, {
       spread: 26,
       startVelocity: 55,
@@ -132,6 +129,7 @@ const JoinInput = () => {
 
   return (
     <div className="flex flex-col items-center justify-center text-black font-bdog">
+      
       {state === "button" && (
         <motion.button
           onClick={() => setState("name")}
@@ -264,114 +262,31 @@ const JoinInput = () => {
               <ArrowLeftIcon />
             </motion.button>
 
-            {/* <motion.button
-              onClick={joinRaffle}
-              disabled={joined || loading}
-              className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
-              initial={{ x: -20, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              {loading && (
-                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                  <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                </div>
-              )}
-              <span className="ml-1">
-                {loading
-                  ? "Joining"
-                  : joined
-                  
-                  : "Join Raffle"}
-
-                <motion.span
-                  key="joined"
-                  className="flex items-center gap-2 text-nowrap"
-                  initial={{ opacity: 0, width: 0 }}
-                  animate={{ opacity: 1, width: "auto" }}
-                  exit={{ opacity: 0, width: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    className="h-5 w-5 shrink-0"
-                  >
-                    <path
-                      fill="currentColor"
-                      fillRule="evenodd"
-                      d="M20.322 4.18a1 1 0 0 1 .249 1.392l-9.75 14a1 1 0 0 1-1.528.135l-5.75-5.75a1 1 0 1 1 1.414-1.414l4.905 4.905 9.067-13.02a1 1 0 0 1 1.393-.249"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  You've joined the Raffle!
-                </motion.span>
-              </span>
-            </motion.button> */}
-
             <motion.button
               onClick={joinRaffle}
               disabled={joined || loading}
-              className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
+              className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 text-white disabled:pointer-events-none disabled:cursor-not-allowed"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
               {loading && (
-                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                  <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                </div>
-              )}
-              <span className="ml-1">
-                {loading ? (
-                  "Joining"
-                ) : joined ? (
-                  <motion.span
-                    key="joined"
-                    className="flex items-center gap-2 text-nowrap"
-                    initial={{ opacity: 0, width: 0 }}
-                    animate={{ opacity: 1, width: "auto" }}
-                    exit={{ opacity: 0, width: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      className="h-5 w-5 shrink-0"
-                    >
-                      <path
-                        fill="currentColor"
-                        fillRule="evenodd"
-                        d="M20.322 4.18a1 1 0 0 1 .249 1.392l-9.75 14a1 1 0 0 1-1.528.135l-5.75-5.75a1 1 0 1 1 1.414-1.414l4.905 4.905 9.067-13.02a1 1 0 0 1 1.393-.249"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    You've joined the Raffle!
-                  </motion.span>
-                ) : (
-                  "Join Raffle"
-                )}
-              </span>
+                <>
+                  <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
+                    <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+                  </div>
+                </>
+              )}{" "}
+              {joined ? "Joined" : "Join Raffle"}
+              {/* {loading && <LoadingIcon />} {joined ? "Joined" : "Join Raffle"} */}
             </motion.button>
           </div>
+          {message && <p>{message}</p>}
         </motion.div>
       )}
-
-      {/* <JoinButton joined={joined} />
-      <button onClick={() => setJoined(!joined)}>📎📎</button> */}
-
-      {/* {message && <p>{message}</p>} */}
     </div>
   );
 };
-
-export default JoinInput;
 
 const ArrowLeftIcon = (
   props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
@@ -416,3 +331,13 @@ const ArrowRightIcon = (
     />
   </svg>
 );
+
+const LoadingIcon = (
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) => (
+  <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
+    <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+  </div>
+);
+
+export default JoinInput;
