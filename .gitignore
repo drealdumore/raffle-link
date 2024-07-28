@@ -21,7 +21,6 @@
 *.pem
 
 test.tsx
-raffleCard.tsx
 
 # debug
 npm-debug.log*
