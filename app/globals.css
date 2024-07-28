@@ -95,7 +95,7 @@ Label {
 }
 
 .icon-lg {
-  strokeWidth: 1.5;
+  stroke-width: 1.5;
   flex-shrink: 0;
   height: 1rem;
   width: 1rem;
@@ -123,11 +123,11 @@ Label {
 }
 
 ::selection {
-  background-color: #1f1f1f;
-  color: #ffffff;
+  background-color: #161616;
+  color: #fafafa;
 }
 
 ::-moz-selection {
-  background-color: #1f1f1f;
-  color: #ffffff;
+  background-color: #161616;
+  color: #fafafa;
 }

@@ -17,6 +17,8 @@ export const POST = async (
     }
 
     const raffle = await Raffle.findById(params.raffleId);
+    console.log(raffle);
+    
 
     if (!raffle) {
       return new NextResponse("Raffle not found", { status: 404 });

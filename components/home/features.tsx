@@ -1,10 +1,41 @@
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
+
+const variants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.3,
+    },
+  },
+};
+
+const features = {
+  hidden: {
+    opacity: 0,
+    y: 30,
+  },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+    },
+  },
+};
 
 const Features = () => {
   return (
-    <section className="flex flex-col gap-6 justify-center mt-7">
-      <div className="flex justify-center items-center mb-4">
+    <motion.section
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 15 }}
+      transition={{ delay: 0.35 }}
+      className="flex flex-col gap-6 justify-center mt-7"
+    >
+      <div className="flex justify-center items-center mb-6">
         <h2 className="font-cal text-5xl font-bold relative">
           Features
           <Image
@@ -18,8 +49,16 @@ const Features = () => {
         </h2>
       </div>
 
-      <ul className="grid lg:grid-cols-2 gap-y-16 gap-x-8 xl:gap-x-16">
-        <li className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left">
+      <motion.ul
+        variants={variants}
+        initial="hidden"
+        animate="show"
+        className="grid lg:grid-cols-2 gap-y-16 gap-x-8 xl:gap-x-16"
+      >
+        <motion.li
+          variants={features}
+          className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left"
+        >
           <div className="flex justify-center items-center shrink-0 bg-gradient-to-br ring-1 shadow-xl rounded-xl w-12 h-12 shadow-emerald-500/30 from-green-300/50 to-emerald-300/50 text-emerald-500 ring-emerald-500/35">
             <TagIcon />
           </div>
@@ -33,9 +72,12 @@ const Features = () => {
               free or paid to enter.
             </p>
           </div>
-        </li>
+        </motion.li>
 
-        <li className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left">
+        <motion.li
+          variants={features}
+          className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left"
+        >
           <div className="flex justify-center items-center shrink-0 bg-gradient-to-br ring-1 shadow-xl rounded-xl w-12 h-12 shadow-blue-500/30 from-sky-300/50 to-blue-300/50 text-blue-500 ring-blue-500/30">
             <LinkIcon />
           </div>
@@ -49,9 +91,12 @@ const Features = () => {
               participants.
             </p>
           </div>
-        </li>
+        </motion.li>
 
-        <li className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left">
+        <motion.li
+          variants={features}
+          className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left"
+        >
           <div className="flex justify-center items-center shrink-0 bg-gradient-to-br ring-1 shadow-xl rounded-xl w-12 h-12 shadow-orange-500/30 from-orange-200/50 to-orange-500/40 text-orange-500 ring-orange-500/35">
             <QRIcon />
           </div>
@@ -64,9 +109,12 @@ const Features = () => {
               payment option that works best for you and your participants.
             </p>
           </div>
-        </li>
+        </motion.li>
 
-        <li className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left">
+        <motion.li
+          variants={features}
+          className="group w-full relative grid grid-cols-auto-span items-start gap-8 text-left"
+        >
           <div className="flex justify-center items-center shrink-0 bg-gradient-to-br ring-1 shadow-xl rounded-xl w-12 h-12 shadow-amber-500/30 from-yellow-200/75 to-orange-200/75 text-amber-500 ring-amber-400/60">
             <HappyIcon />
           </div>
@@ -79,9 +127,9 @@ const Features = () => {
               detailed descriptions, and more.
             </p>
           </div>
-        </li>
-      </ul>
-    </section>
+        </motion.li>
+      </motion.ul>
+    </motion.section>
   );
 };
 

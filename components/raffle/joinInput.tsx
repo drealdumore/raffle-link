@@ -1,32 +1,93 @@
 "use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, JSX, SVGProps } from "react";
 import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
 import ErrorMessage from "../shared/errorMessage";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import JoinButton from "./joinButton";
 
 const isValidEmail = (email: string) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
 };
 
-const GetInTouch = () => {
-  const [state, setState] = useState<"button" | "name" | "email" | "confirm">(
-    "button"
-  );
+const JoinInput = () => {
+  const [state, setState] = useState("button");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
+  const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [raffleId, setRaffleId] = useState('');
-  const [message, setMessage] = useState('');
+  const [raffleId] = useState("66a004263f9646a15a7c6ee4");
+  const [showConfetti, setShowConfetti] = useState(false);
 
-  const joinRaffle  = async () => {
+  const count = 200;
+  const defaults = {
+    origin: { y: 0.7 },
+  };
+
+  function fire(particleRatio: number, opts: any) {
+    confetti({
+      ...defaults,
+      ...opts,
+      particleCount: Math.floor(count * particleRatio),
+    });
+  }
+
+  const handleConfetti = () => {
+    setShowConfetti(true);
+    fire(0.25, {
+      spread: 26,
+      startVelocity: 55,
+    });
+    fire(0.2, {
+      spread: 60,
+    });
+    fire(0.35, {
+      spread: 100,
+      decay: 0.91,
+      scalar: 0.8,
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 25,
+      decay: 0.92,
+      scalar: 1.2,
+    });
+    fire(0.1, {
+      spread: 120,
+      startVelocity: 45,
+    });
+  };
+
+  useEffect(() => {
+    const checkIfJoined = async () => {
+      if (!isValidEmail(email)) return;
+      setLoading(true);
+      const response = await fetch(`/api/raffles/${raffleId}/check`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const result = await response.json();
+      if (result.joined) {
+        setJoined(true);
+        setMessage("You have already joined this raffle.");
+      }
+      setLoading(false);
+    };
+
+    checkIfJoined();
+  }, [email, raffleId]);
+
+  const joinRaffle = async () => {
     setLoading(true);
-    // Call API to join raffle
-    const response = await fetch("/api/raffles/join", {
+    const response = await fetch(`/api/raffles/${raffleId}/join`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -36,21 +97,13 @@ const GetInTouch = () => {
 
     if (response.ok) {
       setJoined(true);
+      handleConfetti();
+      setMessage("Successfully joined the raffle!");
     } else {
-      alert("Error joining raffle. Please try again.");
+      const result = await response.json();
+      setMessage(result.message || "Error joining raffle. Please try again.");
     }
 
-    // try {
-    //   const res = await fetch('/api/raffle/join', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify({ raffleId, name, email }),
-    //   });
-    //   const data = await res.json();
-    //   setMessage(data.message);
-    // } catch (error) {
-    //   setMessage('Error joining raffle');
-    // }
     setLoading(false);
   };
 
@@ -84,11 +137,12 @@ const GetInTouch = () => {
           onClick={() => setState("name")}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="px-4 py-2 hover:ring-4 hover:ring-neutral-900/5 hover: shadow-md hover:rounded-md transition-all  text-white bg-neutral-900  rounded-md  shadow-black/5 hover:bg-zinc-800"
+          className="px-4 py-2 hover:ring-4 hover:ring-neutral-900/5 hover:shadow-md hover:rounded-md transition-all text-white bg-neutral-900 rounded-md shadow-black/5 hover:bg-zinc-800"
         >
           Join Raffle
         </motion.button>
       )}
+
       {state === "name" && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -145,7 +199,7 @@ const GetInTouch = () => {
           <div className="flex justify-between gap-3 items-center">
             <motion.button
               onClick={() => setState("name")}
-              className="p-2 bg-neutral-900 rounded-sm  self-end"
+              className="p-2 bg-neutral-900 rounded-sm self-end"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
@@ -189,7 +243,7 @@ const GetInTouch = () => {
           animate={{ opacity: 1 }}
           className="flex flex-col items-center mt-4 space-y-2 gap-3"
         >
-          <div className=" flex gap-4 justify-between items-center p-4 rounded-md bg-transparent  border text-muted-foreground shadow-sm ring-4 ring-gray-900/5 font-light font-bdog leading-none tracking-tight">
+          <div className="flex gap-4 justify-between items-center p-4 rounded-md bg-transparent border text-muted-foreground shadow-sm ring-4 ring-gray-900/5 font-light font-bdog leading-none tracking-tight">
             <div className="flex flex-col gap-2 text-neutral-900">
               <p>Name:</p>
               <p>Email:</p>
@@ -210,43 +264,118 @@ const GetInTouch = () => {
               <ArrowLeftIcon />
             </motion.button>
 
-            <motion.button
-              onClick={joinRaffle }
-              disabled={loading}
-              className="px-4 py-2 text-white bg-neutral-900 rounded-sm font-bdog truncate overflow-hidden gap-2 font-medium group flex items-center justify-center shadow-md shadow-black/5 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
+            {/* <motion.button
+              onClick={joinRaffle}
+              disabled={joined || loading}
+              className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
               initial={{ x: -20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
               {loading && (
-                <>
-                  <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                    <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                  </div>
-                </>
+                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
+                  <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+                </div>
+              )}
+              <span className="ml-1">
+                {loading
+                  ? "Joining"
+                  : joined
+                  
+                  : "Join Raffle"}
+
+                <motion.span
+                  key="joined"
+                  className="flex items-center gap-2 text-nowrap"
+                  initial={{ opacity: 0, width: 0 }}
+                  animate={{ opacity: 1, width: "auto" }}
+                  exit={{ opacity: 0, width: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 shrink-0"
+                  >
+                    <path
+                      fill="currentColor"
+                      fillRule="evenodd"
+                      d="M20.322 4.18a1 1 0 0 1 .249 1.392l-9.75 14a1 1 0 0 1-1.528.135l-5.75-5.75a1 1 0 1 1 1.414-1.414l4.905 4.905 9.067-13.02a1 1 0 0 1 1.393-.249"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  You've joined the Raffle!
+                </motion.span>
+              </span>
+            </motion.button> */}
+
+            <motion.button
+              onClick={joinRaffle}
+              disabled={joined || loading}
+              className="p-2 bg-neutral-900 rounded-sm flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed"
+              initial={{ x: -20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {loading && (
+                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
+                  <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+                </div>
               )}
               <span className="ml-1">
                 {loading ? (
-                  <span>
-                    Joining
-                    {/* Joining <span className="dot-pulse"></span> */}
-                  </span>
+                  "Joining"
+                ) : joined ? (
+                  <motion.span
+                    key="joined"
+                    className="flex items-center gap-2 text-nowrap"
+                    initial={{ opacity: 0, width: 0 }}
+                    animate={{ opacity: 1, width: "auto" }}
+                    exit={{ opacity: 0, width: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      className="h-5 w-5 shrink-0"
+                    >
+                      <path
+                        fill="currentColor"
+                        fillRule="evenodd"
+                        d="M20.322 4.18a1 1 0 0 1 .249 1.392l-9.75 14a1 1 0 0 1-1.528.135l-5.75-5.75a1 1 0 1 1 1.414-1.414l4.905 4.905 9.067-13.02a1 1 0 0 1 1.393-.249"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    You've joined the Raffle!
+                  </motion.span>
                 ) : (
                   "Join Raffle"
                 )}
-                {joined ? "You have already joined!" : ""}
               </span>
             </motion.button>
           </div>
         </motion.div>
       )}
+
+      {/* <JoinButton joined={joined} />
+      <button onClick={() => setJoined(!joined)}>📎📎</button> */}
+
+      {/* {message && <p>{message}</p>} */}
     </div>
   );
 };
 
-export default GetInTouch;
+export default JoinInput;
 
-const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const ArrowLeftIcon = (
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -266,7 +395,9 @@ const ArrowLeftIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const ArrowRightIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const ArrowRightIcon = (
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

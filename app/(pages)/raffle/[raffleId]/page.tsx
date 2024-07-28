@@ -1,3 +1,4 @@
+import JoinInput from "@/components/raffle/joinInput";
 import React from "react";
 
 const page = ({ params }: { params: { raffleId: string } }) => {
@@ -21,15 +22,7 @@ const page = ({ params }: { params: { raffleId: string } }) => {
             </div>
           </div>
 
-          <div>
-            {/* button */}
-            <button
-              type="submit"
-              className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-normal group flex items-center justify-center   bg-neutral-900   text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
-            >
-              <span className="ml-1">Join Raffle</span>
-            </button>
-          </div>
+          <JoinInput />
         </div>
 
         <div className="h-50">bottom</div>

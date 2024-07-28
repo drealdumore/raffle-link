@@ -25,9 +25,9 @@ const ErrorMessage: React.FC<Props> = ({ message, className }) => {
           ></path>
           <path
             fill="currentColor"
-            fill-rule="evenodd"
+            fillRule="evenodd"
             d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2M4 12a8 8 0 1 1 16 0 8 8 0 0 1-16 0"
-            clip-rule="evenodd"
+            clipRule="evenodd"
           ></path>
         </svg>
         <div className="pt-px">

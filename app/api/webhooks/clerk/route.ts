@@ -1,4 +1,3 @@
-// import { clerkClient } from "@clerk/nextjs";
 import { createUser } from "@/app/actions/user.action";
 import { WebhookEvent, clerkClient } from "@clerk/nextjs/server";
 import { headers } from "next/headers";
