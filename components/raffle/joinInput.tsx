@@ -19,12 +19,16 @@ const JoinInput = () => {
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [raffleId] = useState("66a004263f9646a15a7c6ee4");
+  const [raffleId, setRaffleId] = useState("");
 
   const count = 200;
   const defaults = {
     origin: { y: 0.7 },
   };
+
+  useEffect(() => {
+    setRaffleId("66a004263f9646a15a7c6ee4");
+  }, []);
 
   function fire(particleRatio: number, opts: any) {
     confetti({
@@ -33,6 +37,7 @@ const JoinInput = () => {
       particleCount: Math.floor(count * particleRatio),
     });
   }
+
 
   const handleConfetti = () => {
     fire(0.25, {
@@ -59,10 +64,14 @@ const JoinInput = () => {
     });
   };
 
+
+
   useEffect(() => {
     const checkIfJoined = async () => {
       if (!isValidEmail(email)) return;
+
       setLoading(true);
+
       const response = await fetch(`/api/raffles/${raffleId}/check`, {
         method: "POST",
         headers: {
@@ -129,7 +138,6 @@ const JoinInput = () => {
 
   return (
     <div className="flex flex-col items-center justify-center text-black font-bdog">
-      
       {state === "button" && (
         <motion.button
           onClick={() => setState("name")}
@@ -270,15 +278,16 @@ const JoinInput = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              {loading && (
+              {/* {loading && (
                 <>
                   <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
                     <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
                   </div>
                 </>
               )}{" "}
-              {joined ? "Joined" : "Join Raffle"}
-              {/* {loading && <LoadingIcon />} {joined ? "Joined" : "Join Raffle"} */}
+              {joined ? "Joined" : "Join Raffle"} */}
+              {loading && <LoadingIcon />} {joined ? "Joined" : loading ? "Checking..." : "Join Raffle"}
+
             </motion.button>
           </div>
           {message && <p>{message}</p>}
@@ -332,9 +341,7 @@ const ArrowRightIcon = (
   </svg>
 );
 
-const LoadingIcon = (
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
-) => (
+const LoadingIcon = () => (
   <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
     <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
   </div>

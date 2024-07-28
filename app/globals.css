@@ -30,6 +30,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --text-error: #f93a37;
+    --rotation-angle: 35deg;
   }
 
   .dark {
@@ -107,6 +108,15 @@ Label {
   animation: dotPulse 2.5s infinite;
 }
 
+@keyframes bouncing {
+  0%, 100% {
+    transform: translateY(0) rotate(var(--rotation-angle));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--rotation-angle));
+  }
+}
+
 @keyframes dotPulse {
   0% {
     content: "";
@@ -120,6 +130,14 @@ Label {
   100% {
     content: "...";
   }
+}
+
+
+.animate__bounce {
+  animation-name: bouncing;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
 }
 
 ::selection {
