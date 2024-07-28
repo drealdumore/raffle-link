@@ -1,6 +1,7 @@
 "use server";
 
-import User from "../models/User";
+
+import User from "@/lib/clerk.user";
 import { connectMongoDB } from "../utils/mongoConnect";
 
 export async function createUser(user: any) {

@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import localFont from "next/font/local";
 
 import "./globals.css";
-import { ClerkProvider } from "@clerk/nextjs";
+import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import Nav from "../components/shared/nav";
 import Footer from "@/components/shared/footer";
 
@@ -35,9 +35,15 @@ export default function RootLayout({
         <body
           className={`${calSans.variable} ${BDOG.variable}  ${inter.className}`}
         >
-          <Nav />
-          {children}
-          {/* <Footer /> */}
+          <ClerkLoading>
+            <div className="flex flex-col items-center text-center mt-32">
+              LOADING...
+            </div>
+          </ClerkLoading>
+          <ClerkLoaded>
+            <Nav />
+            {children}
+          </ClerkLoaded>
         </body>
       </html>
     </ClerkProvider>
