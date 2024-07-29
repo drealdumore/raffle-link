@@ -1,6 +1,5 @@
-import Raffle from "@/app/models/Raffle";
+import Raffle from "@/models/Raffle";
 import { connectMongoDB } from "@/app/utils/mongoConnect";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 // GET RAFFLE ::: FIND RAFFLE
@@ -37,11 +36,11 @@ export const PATCH = async (
   { params }: { params: { raffleId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    // const { userId } = auth();
 
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // if (!userId) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
 
     await connectMongoDB();
 
@@ -59,9 +58,9 @@ export const PATCH = async (
       });
     }
 
-    if (raffle.createdBy !== userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // if (raffle.createdBy !== userId) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
 
     raffle.title = title || raffle.title;
     raffle.description = description || raffle.description;
@@ -85,11 +84,11 @@ export const DELETE = async (
   { params }: { params: { raffleId: string } }
 ) => {
   try {
-    const { userId } = auth();
+    // const { userId } = auth();
 
-    if (!userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // if (!userId) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
 
     await connectMongoDB();
 
@@ -101,9 +100,9 @@ export const DELETE = async (
       });
     }
 
-    if (raffle.createdBy !== userId) {
-      return new NextResponse("Unauthorized", { status: 401 });
-    }
+    // if (raffle.createdBy !== userId) {
+    //   return new NextResponse("Unauthorized", { status: 401 });
+    // }
 
     await Raffle.findByIdAndDelete(raffle._id);
 

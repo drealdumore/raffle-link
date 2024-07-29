@@ -1,4 +1,4 @@
-import Raffle from "@/app/models/Raffle";
+import Raffle from "@/models/Raffle";
 import { connectMongoDB } from "@/app/utils/mongoConnect";
 import { NextRequest, NextResponse } from "next/server";
 

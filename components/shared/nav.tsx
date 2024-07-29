@@ -1,10 +1,32 @@
-import { auth, UserButton } from "@clerk/nextjs";
+import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getServerSession } from "next-auth/next";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import React from "react";
 
+type User =
+  | {
+      name?: string | null | undefined;
+      email?: string | null | undefined;
+      image?: string | null | undefined;
+    }
+  | undefined;
+
 const Nav = async () => {
-  const { userId } = await auth();
-  const isAuth = !!userId;
+  // const { userId } = await auth();
+  // const isAuth = !!userId;
+
+  const session = await getServerSession(options);
+  console.log(session);
+
+  // const { data: session } = useSession({
+  //   required: true,
+  //   onUnauthenticated() {
+  //     redirect("/api/auth/signin?callbackUrl=/client");
+  //   },
+  // });
 
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
@@ -16,7 +38,7 @@ const Nav = async () => {
       </Link>
 
       <nav className="flex gap-6">
-        {!isAuth ? (
+        {!session ? (
           <Link
             href="/sign-in"
             className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
@@ -25,9 +47,16 @@ const Nav = async () => {
           </Link>
         ) : (
           <div className="flex gap-2 items-center justify-center">
-            <Link href="/profile" className="hover:underline hover:underline-offset-2">Profile</Link>
+            <Link
+              href="/profile"
+              className="hover:underline hover:underline-offset-2"
+            >
+              Profile
+            </Link>
 
-            <UserButton afterSignOutUrl="/" />
+            {/* <Image src={session?.image} alt="image" height={20} width={20} /> */}
+
+            {/* <UserButton afterSignOutUrl="/" /> */}
           </div>
         )}
       </nav>

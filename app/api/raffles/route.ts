@@ -1,16 +1,15 @@
-import Raffle from "@/app/models/Raffle";
+import Raffle from "@/models/Raffle";
 import { connectMongoDB } from "@/app/utils/mongoConnect";
-import { auth } from "@clerk/nextjs/server";
 import { NextRequest, NextResponse } from "next/server";
 
 // CREATE RAFFLE
 export const POST = async (req: NextRequest) => {
   try {
-    const { userId } = auth();
+    // const { userId } = auth();
 
-    console.log(userId);
+    // console.log(userId);
 
-    if (!userId) return new NextResponse("Unauthorized", { status: 401 });
+    // if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
     await connectMongoDB();
 
@@ -27,7 +26,7 @@ export const POST = async (req: NextRequest) => {
       description,
       startDate,
       endDate,
-      createdBy: userId,
+      // createdBy: userId,
       participants: [],
     });
 

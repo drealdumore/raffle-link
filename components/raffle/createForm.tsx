@@ -25,7 +25,6 @@ import { Input } from "../ui/input";
 import { createRaffleAction } from "@/app/actions/raffle.action";
 
 import ErrorMessage from "../shared/errorMessage";
-import { useAuth } from "@clerk/nextjs";
 
 interface FormState {
   data: any;
@@ -55,7 +54,7 @@ export default function CreateForm() {
   // const [startDate, setStartDate] = useState("");
   // const [endDate, setEndDate] = useState("");
   const [message, setMessage] = useState("");
-  const { userId } = useAuth();
+  // const { userId } = useAuth();
 
   const [formState, setFormState] = useState(INITIAL_STATE);
 
@@ -130,7 +129,7 @@ export default function CreateForm() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${userId}`,
+          // Authorization: `Bearer ${userId}`,
         },
         body: JSON.stringify({ title, description, startDate, endDate }),
       });
