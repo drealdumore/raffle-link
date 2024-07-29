@@ -11,6 +11,9 @@ export const GET = async (
   try {
     await connectMongoDB();
 
+    //TODO - CHECK IF THE RAFFLE ID CONTAINS A LINK LIKE https://raffle-link.vercel.app/raffle/87748737383773
+    // IT SHOULD ONLY CHECK FOR THE ID AT THE END OF THE ROUTE
+
     if (!params.raffleId) {
       return new NextResponse("Raffle ID is required", { status: 400 });
     }

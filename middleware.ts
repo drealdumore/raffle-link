@@ -21,3 +21,7 @@ export const config = {
   // Match all routes except API routes and Next.js internal routes
   matcher: ["/((?!_next|api).*)"],
 };
+
+// export const config = {
+//   matcher: ["/((?!.+\\.[\\w]+$|_next).*)","/","/(api|trpc)(.*)"],
+// };

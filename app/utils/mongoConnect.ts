@@ -22,7 +22,8 @@
 
 import mongoose, { Mongoose } from "mongoose";
 
-const MONGODB_URL = process.env.DATABASE_IP!;
+const MONGODB_URL = process.env.DATABASE_LOCAL_IP!;
+// const MONGODB_URL = process.env.DATABASE_IP!;
 
 interface MongooseConn {
   conn: Mongoose | null;

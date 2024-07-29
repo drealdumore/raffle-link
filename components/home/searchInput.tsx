@@ -27,7 +27,7 @@ const SearchInput = () => {
       });
 
       if (!response.ok) {
-        setSearchError("raffle with that id does not exist");
+        setSearchError("Raffle with that id does not exist");
         throw new Error("Failed to GET raffle");
       }
       //TODO - FIX THE SEARCH SO THAT AFTER Searching, it routes
