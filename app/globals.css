@@ -31,6 +31,7 @@
     --chart-5: 27 87% 67%;
     --text-error: #f93a37;
     --rotation-angle: 35deg;
+    --spinner-origin: 0.5rem 0.5rem;
   }
 
   .dark {
@@ -109,7 +110,8 @@ Label {
 }
 
 @keyframes bouncing {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0) rotate(var(--rotation-angle));
   }
   50% {
@@ -131,7 +133,6 @@ Label {
     content: "...";
   }
 }
-
 
 .animate__bounce {
   animation-name: bouncing;

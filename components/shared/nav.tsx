@@ -1,28 +1,43 @@
 "use client";
 
+import { auth, UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import React from "react";
 
-const Nav = () => {
+const Nav = async () => {
+  const { userId } = await auth();
+  const isAuth = !!userId;
+
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
       <Link href="/">
-        <div className="text-xl select-none font-cal flex justify-center  gap-1 text-neutral-800">
+        <div className="md:text-xl select-none font-cal flex justify-center  gap-1 text-neutral-800">
           <LinkIcon />
           <p>RaffleLink.</p>
         </div>
       </Link>
 
-      {/* TODO  - ADD THE CLERK USER ICON IF AUTHENTICATED OR CEREATE MY OWN */}
+      {/* TODO  - ADD THE CLERK USER ICON IF AUTHENTICATED OR CREATE MY OWN */}
       {/* DO NOT SHOW THE CREATE RAFFLE WHEN PATHNAME === '/SIGN-IN' && '/SIGN-UP */}
 
       <nav className="flex gap-6">
-        <Link
-          href="/sign-in"
-          className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
-        >
-          Create Raffle
-        </Link>
+        {!isAuth ? (
+          <Link
+            href="/sign-in"
+            className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
+          >
+            Create Raffle
+          </Link>
+        ) : (
+          <>
+            <Link href="/profile">
+              <li>Profile</li>
+            </Link>
+            <li>
+              <UserButton afterSignOutUrl="/" />
+            </li>
+          </>
+        )}
       </nav>
     </header>
   );

@@ -6,6 +6,7 @@ import "./globals.css";
 import { ClerkLoaded, ClerkLoading, ClerkProvider } from "@clerk/nextjs";
 import Nav from "../components/shared/nav";
 import Footer from "@/components/shared/footer";
+import Spinner from "@/components/shared/spinner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,8 +37,8 @@ export default function RootLayout({
           className={`${calSans.variable} ${BDOG.variable}  ${inter.className}`}
         >
           <ClerkLoading>
-            <div className="flex flex-col items-center text-center mt-32">
-              LOADING...
+            <div className="flex h-screen items-center justify-center">
+              <Spinner />
             </div>
           </ClerkLoading>
           <ClerkLoaded>
