@@ -37,7 +37,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <Nav />
-          {children}
+          <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
+            {children}
+          </main>
         </AuthProvider>
       </body>
     </html>

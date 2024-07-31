@@ -2,10 +2,15 @@ import mongoose, { Schema, Document, Model, model } from "mongoose";
 import bcrypt from "bcryptjs";
 
 interface IUser extends Document {
-  name: string;
-  email: string;
+  name?: string | undefined | null;
+  email?: string | undefined | null;
+  image?: string | undefined | null;
   password: string;
 }
+
+// TODO - ADD THE RAFFLES. AND FIND THE BEST WAY TO ADD RAFFLES TO USERS
+// EITHER CHILD AWARE OF PARAENT OR PARENT AWARE OF CHILD.
+// SEEING THAT SOME USERS HAVE IMAGE AND PAERTICIPANTS HAVE NAME, EMAIL
 
 const UserSchema: Schema<IUser> = new Schema({
   name: {
@@ -15,6 +20,9 @@ const UserSchema: Schema<IUser> = new Schema({
     type: String,
     required: [true, "Please provide an email"],
     unique: true,
+  },
+  image: {
+    type: String,
   },
   password: {
     type: String,

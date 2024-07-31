@@ -23,11 +23,9 @@ export default function Home() {
   // getAll();
 
   return (
-    <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
-      <div className="flex min-h-screen w-full flex-col space-y-6 p-4 md:p-8">
-        <Header />
-        <Features />
-      </div>
-    </main>
+    <div className="flex min-h-screen w-full flex-col space-y-6 p-4 md:p-8">
+      <Header />
+      <Features />
+    </div>
   );
 }

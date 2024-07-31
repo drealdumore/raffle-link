@@ -19,7 +19,7 @@ const Nav = async () => {
   // const isAuth = !!userId;
 
   const session = await getServerSession(options);
-  console.log(session);
+  console.log("session: ", session);
 
   // const { data: session } = useSession({
   //   required: true,

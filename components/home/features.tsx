@@ -36,7 +36,7 @@ const Features = () => {
       className="flex flex-col gap-6 justify-center mt-7"
     >
       <div className="flex justify-center items-center mb-6">
-        <h2 className="font-cal text-5xl font-bold relative">
+        <h2 className=" relative mt-5 font-cal  text-4xl font-extrabold leading-[1.15] text-black sm:text-6xl sm:leading-[1.15]">
           Features
           <Image
             alt="scribble"

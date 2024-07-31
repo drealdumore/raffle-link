@@ -1,6 +1,9 @@
+"use client";
+
 import RaffleCard from "@/components/profile/raffleCard";
 import Link from "next/link";
 import React from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 interface Raffle {
   title: string;
@@ -39,44 +42,49 @@ const page = () => {
     },
   ];
 
+  const { data: session } = useSession();
+
   // TODO - GET THE URL AND ADD THE ID TO THE END
   // https://raffle-link.vercel.app/raffle/87748737383773
 
   return (
     <div>
       {/* user data:: name and stauts */}
-      <article className="flex items-center gap-4  lg:h-2/6 h-2/5 max-lg:w-full max-lg:flex ">
-        <article className="max-w-[170px] w-full flex-shrink-0 mb-10 ">
-          <div className=" ring-4 ring-neutral-900/5 aspect-square rounded-full bg-blue-50"></div>
-        </article>
-
-        <article className="max-w-2xl">
-          <h1 className="text-xl font-semibold leading-snug pointer-events-none transition-colors group hover:text-zinc-400">
-            <span className="font-cal leading-5">
-              {" "}
-              <span className="font-bold font-cal text-2xl">Saint </span>|
-              Full-Stack Developer{" "}
-            </span>
-          </h1>
-          <article className="flex items-center  gap-x-3 mb-4">
-            <p className="font-light font-bdog items-center gap-2 hidden md:flex">
-              Status:
-            </p>
-            <article className="flex items-center flex-row gap-x-2">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-700 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-auto w-7 bg-emerald-700"></span>
-              </span>
+      <article className="flex flex-col md:flex-row items-center gap-4  lg:h-2/6 h-2/5 max-lg:w-full max-lg:flex ">
+        {session && (
+          <>
+            <article className="max-w-[130px] w-full flex-shrink-0 mb-10 ">
+              <div className=" ring-4 ring-neutral-900/5 aspect-square rounded-full bg-blue-50"></div>
             </article>
-          </article>
-        </article>
+
+            <div className="max-w-2xl">
+              <div className="flex flex-col gap-1">
+                <p className=" font-cal text-2xl">{session.user?.name}</p>
+                <p className="text-base font-bdog">{session.user?.email}</p>
+
+                <div className="flex items-center  gap-x-3 mb-4">
+                  <p className="font-light text-base font-bdog items-center gap-2 flex">
+                    Status:
+                  </p>
+                  <div className="flex items-center flex-row gap-x-2">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-700 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-auto w-7 bg-emerald-700"></span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
       </article>
 
-      <div className="mx-auto w-full max-w-screen-xl px-2.5 lg:px-20 grid gap-y-2">
+      <div className="mx-auto w-full max-w-screen-xl  lg:px-20 grid gap-y-2">
         <div className="flex mb-4 flex-wrap items-center justify-between gap-2 md:flex-nowrap">
           <h1 className="order-1 text-2xl font-semibold tracking-tight text-black">
             Raffles
           </h1>
+          
 
           <div className="order-3 flex gap-x-2">
             <button

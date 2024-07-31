@@ -39,13 +39,13 @@ const Header = () => {
           className="mx-auto mt-9 flex max-w-fit space-x-4 items-center gap-3 justify-center"
         >
           <Link
-            className="rounded-lg mx-auto max-w-fit border px-6 py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-neutral-200 disabled:bg-blue-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 bg-blue-500 text-white hover:bg-blue-600"
+            className="rounded-lg mx-auto max-w-fit border px-3 md:px-6  py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-neutral-200 disabled:bg-blue-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 bg-blue-500 text-white hover:bg-blue-600"
             href="/raffle/new"
           >
             Create Raffle
           </Link>
           <button
-            className="rounded-lg duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:transform active:scale-x-110 active:scale-y-90 mx-auto max-w-fit border px-6 py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-blue-100 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 border-neutral-200 bg-white hover:text-blue-300 text-neutral-500"
+            className="rounded-lg duration-300 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] active:transform active:scale-x-110 active:scale-y-90 mx-auto max-w-fit border px-3 md:px-6 py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-blue-100 disabled:bg-neutral-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 border-neutral-200 bg-white hover:text-blue-300 text-neutral-500"
             onClick={handleJoinClick}
           >
             Join a Raffle

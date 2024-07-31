@@ -11,6 +11,7 @@ export const POST = async (req: NextRequest) => {
 
     // if (!userId) return new NextResponse("Unauthorized", { status: 401 });
 
+    //  TODO - USE NEXT-AUTH USER ID AS CREATED BY ID
     await connectMongoDB();
 
     const { title, description, startDate, endDate } = await req.json();
@@ -39,6 +40,7 @@ export const POST = async (req: NextRequest) => {
   }
 };
 
+// GET ALL RAFFLES :: GET ALL
 export const GET = async (req: NextRequest) => {
   try {
     await connectMongoDB();
