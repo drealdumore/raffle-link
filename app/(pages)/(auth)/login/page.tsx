@@ -5,9 +5,13 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const formSchema = z.object({
-  email: z.string().email(),
+  email: z.string().email({
+    message: "Invalid email address.",
+  }),
   password: z.string(),
 });
 
@@ -22,16 +26,17 @@ export default function LoginPage() {
 
   const router = useRouter();
 
-  // const form = useForm<z.infer<typeof formSchema>>({
-  //   resolver: zodResolver(formSchema),
-  //   defaultValues: {
-  //     email: "",
-  //     password: "",
-  //   },
-  // });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // e.preventDefault();
     setLoading(true);
 
     try {
@@ -49,7 +54,7 @@ export default function LoginPage() {
         localStorage.setItem("token", data.token);
         setMessage("Login successful");
         setLoading(false);
-        router.push("/raffle.new");
+        router.push("/raffle/new");
       } else {
         setMessage(data.message);
       }
@@ -60,7 +65,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <div>
+      {/* <div>
         {!session ? (
           <button onClick={() => signIn("google")}>Sign in with Google</button>
         ) : (
@@ -69,7 +74,7 @@ export default function LoginPage() {
             <button onClick={() => signOut()}>Sign out</button>
           </div>
         )}
-      </div>
+      </div> */}
 
       <div className=" flex flex-col gap-4 items-center justify-center p-24">
         <div className="md:w-full mx-auto w-[95%] bg-white/20 ring-4 ring-gray-900/5 rounded-lg border text-card-foreground shadow-sm max-w-sm">
@@ -82,13 +87,18 @@ export default function LoginPage() {
             </p>
           </div>
           <div className="p-6 pt-0">
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <form
+              className="flex flex-col gap-4"
+              onSubmit={form.handleSubmit(handleSubmit)}
+            >
+              {/* <form className="flex flex-col gap-4" onSubmit={handleSubmit}> */}
               <div className="space-y-2">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 ">
                   {/* if error: text-destructive */}
                   Email
                 </label>
                 <input
+                  name="email"
                   className="flex custom h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   placeholder="Email"
                   value={email}
@@ -102,6 +112,7 @@ export default function LoginPage() {
                 </label>
                 <div className="relative">
                   <input
+                    name="password"
                     className="flex custom h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10"
                     placeholder="••••••••"
                     type={showPassword ? "text" : "password"}
@@ -110,8 +121,7 @@ export default function LoginPage() {
                     required
                   />
                   <span
-                    // TODO - FIX THIS ICON CHANGE METHOD IT DOES NOT CHANGE
-                    onClick={(prevState) => setShowPassword(!prevState)}
+                    onClick={() => setShowPassword((prevState) => !prevState)}
                     className="absolute top-[7px] right-1 cursor-pointer select-none"
                   >
                     {showPassword ? <OpenEye /> : <CloseEye />}

@@ -15,18 +15,8 @@ type User =
   | undefined;
 
 const Nav = async () => {
-  // const { userId } = await auth();
-  // const isAuth = !!userId;
-
   const session = await getServerSession(options);
   console.log("session: ", session);
-
-  // const { data: session } = useSession({
-  //   required: true,
-  //   onUnauthenticated() {
-  //     redirect("/api/auth/signin?callbackUrl=/client");
-  //   },
-  // });
 
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
@@ -40,23 +30,30 @@ const Nav = async () => {
       <nav className="flex gap-6">
         {!session ? (
           <Link
-            href="/sign-in"
+            href="/login"
             className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
           >
             Create Raffle
           </Link>
+        ) : session.user?.image ? (
+          <Link rel="prefetch" href="/profile">
+            <Image
+              src={session.user.image}
+              alt="image"
+              height={45}
+              width={45}
+              className="rounded-full hover:ring-neutral-900/5 hover:ring-2 transition-all cursor-pointer"
+            />
+          </Link>
         ) : (
           <div className="flex gap-2 items-center justify-center">
             <Link
+              rel="prefetch"
               href="/profile"
               className="hover:underline hover:underline-offset-2"
             >
               Profile
             </Link>
-
-            {/* <Image src={session?.image} alt="image" height={20} width={20} /> */}
-
-            {/* <UserButton afterSignOutUrl="/" /> */}
           </div>
         )}
       </nav>

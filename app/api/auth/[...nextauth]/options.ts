@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectMongoDB } from "@/app/utils/mongoConnect";
 import User from "@/models/User";
-import MongoDBAdapter from "@auth/mongodb-adapter";
+
 
 export const options: NextAuthOptions = {
   providers: [
@@ -57,7 +57,15 @@ export const options: NextAuthOptions = {
     }),
   ],
 
-  // adapter: MongoDBAdapter(connectMongoDB),
+  pages: {
+    signIn: "/login",
+    signOut: "/auth/signout",
+    error: "/auth/error", // Error code passed in query string as ?error=
+    verifyRequest: "/auth/verify-request", // (used for check email message)
+    // newUser: "/auth/new-user", // New users will be directed here on first sign in (leave the property out if not of interest)
+  },
+
+  
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
@@ -90,7 +98,7 @@ export const options: NextAuthOptions = {
         };
       return session;
     },
-    
+
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;

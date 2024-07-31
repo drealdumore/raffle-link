@@ -39,6 +39,7 @@ const Header = () => {
           className="mx-auto mt-9 flex max-w-fit space-x-4 items-center gap-3 justify-center"
         >
           <Link
+            rel="prefetch"
             className="rounded-lg mx-auto max-w-fit border px-3 md:px-6  py-3 text-sm font-medium shadow-sm transition-all hover:ring-4 hover:ring-neutral-200 disabled:bg-blue-100 disabled:text-neutral-500 disabled:cursor-not-allowed disabled:hover:ring-0 disabled:border-neutral-200 bg-blue-500 text-white hover:bg-blue-600"
             href="/raffle/new"
           >

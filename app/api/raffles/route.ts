@@ -1,18 +1,25 @@
 import Raffle from "@/models/Raffle";
 import { connectMongoDB } from "@/app/utils/mongoConnect";
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { options } from "../auth/[...nextauth]/options";
 
-// CREATE RAFFLE
+// // CREATE RAFFLE
 export const POST = async (req: NextRequest) => {
   try {
-    // const { userId } = auth();
-
-    // console.log(userId);
-
-    // if (!userId) return new NextResponse("Unauthorized", { status: 401 });
-
-    //  TODO - USE NEXT-AUTH USER ID AS CREATED BY ID
     await connectMongoDB();
+
+  const session = await getServerSession(options);
+  // const session = await getServerSession();
+
+// TODO -  fix the AUTH FIRST.
+//? ADD PROVIDER USER TO DB THEN USE THEIR ID AS CREATED BY
+
+    if (!session || !session.user) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const userId = session.user?.id;
 
     const { title, description, startDate, endDate } = await req.json();
 
@@ -27,7 +34,7 @@ export const POST = async (req: NextRequest) => {
       description,
       startDate,
       endDate,
-      // createdBy: userId,
+      createdBy: userId,
       participants: [],
     });
 

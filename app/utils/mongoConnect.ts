@@ -1,29 +1,9 @@
-// import mongoose from "mongoose";
-// let isConnected: boolean = false;
-
-// export const connectMongoDB = async (): Promise<void> => {
-//   mongoose.set("strictQuery", true);
-
-//   if (isConnected) {
-//     console.log("MongoDB is already connected");
-//     return;
-//   }
-
-//   try {
-//     await mongoose.connect(process.env.DATABASE_IP!);
-//     // await mongoose.connect(process.env.DATABASE_LOCAL_IP!);
-
-//     isConnected = true;
-//     console.log("MongoDB is connected");
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
 import mongoose, { Mongoose } from "mongoose";
 
-const MONGODB_URL = process.env.DATABASE_LOCAL_IP!;
-// const MONGODB_URL = process.env.DATABASE_IP!;
+const MONGODB_URL =
+  process.env.NODE_ENV === "production"
+    ? process.env.DATABASE_IP!
+    : process.env.DATABASE_LOCAL_IP!;
 
 interface MongooseConn {
   conn: Mongoose | null;

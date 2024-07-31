@@ -49,6 +49,8 @@ export default function CreateForm() {
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 5));
   const [endDateValid, setEndDateValid] = useState("");
 
+
+  // TODO - UPLOAD IMAGE TO CLOUD THEN SAVE URL
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   // const [startDate, setStartDate] = useState("");
@@ -124,20 +126,21 @@ export default function CreateForm() {
   };
 
   const createRaffle = async () => {
-    try {
-      const res = await fetch("/api/raffle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // Authorization: `Bearer ${userId}`,
-        },
-        body: JSON.stringify({ title, description, startDate, endDate }),
-      });
-      const data = await res.json();
-      setMessage(`Raffle created with ID: ${data._id}`);
-    } catch (error) {
-      setMessage("Error creating raffle");
-    }
+    // try {
+    //   const res = await fetch("/api/raffle", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       // Authorization: `Bearer ${userId}`,
+    //     },
+    //     body: JSON.stringify({ title, description, startDate, endDate }),
+    //   });
+    //   const data = await res.json();
+    //   setMessage(`Raffle created with ID: ${data._id}`);
+    // } catch (error) {
+    //   setMessage("Error creating raffle");
+    // }
+    console.log({ title, description, startDate, endDate });
   };
 
   return (
@@ -148,25 +151,20 @@ export default function CreateForm() {
           Fill out the details below to create a new raffle draw.
         </CardDescription>
       </CardHeader>
+
       <CardContent className="pt-3">
-        <form className="grid gap-4" onSubmit={handleSubmit}>
-          {/* <form
-          className="grid gap-4"
-          action={async (formData: FormData) => {
-            setLoading(true);
-            const result = await createRaffleAction(formState, formData);
-            setFormState(result);
-            setLoading(false);
-          }}
-        > */}
+        <form className="grid gap-4" onSubmit={createRaffle}>
           {/* Raffle title */}
           <div className="grid gap-2">
             <Label htmlFor="raffle-name">Raffle Name</Label>
+
             <Input
               className="custom"
               id="raffle-name"
               name="raffleName"
               placeholder="Enter raffle name"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
             {formState.zodErrors?.raffleName && (
               <ErrorMessage
@@ -185,6 +183,8 @@ export default function CreateForm() {
               placeholder="Describe the raffle"
               rows={3}
               className="custom"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
             {formState.zodErrors?.raffleDescription && (
               <ErrorMessage
@@ -193,19 +193,6 @@ export default function CreateForm() {
               />
             )}
           </div>
-
-          {/* <input
-        type="datetime-local"
-        placeholder="Start Date"
-        value={startDate}
-        onChange={(e) => setStartDate(e.target.value)}
-      />
-      <input
-        type="datetime-local"
-        placeholder="End Date"
-        value={endDate}
-        onChange={(e) => setEndDate(e.target.value)}
-      /> */}
 
           {/* Dates */}
           <div className="grid gap-2">
@@ -283,52 +270,6 @@ export default function CreateForm() {
               <ErrorMessage message={endDateValid} className="p-0" />
             )}
           </div>
-
-          {/* Radio buttons */}
-          <div className="grid gap-2">
-            <Label>Raffle Type</Label>
-            <RadioGroup
-              onValueChange={(value) => setIsPaidRaffle(value === "paid")}
-              defaultValue="free"
-            >
-              <div className="flex items-center gap-4">
-                <Label
-                  htmlFor="free-raffle"
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <RadioGroupItem id="free-raffle" value="free" />
-                  Free Raffle
-                </Label>
-                <Label
-                  htmlFor="paid-raffle"
-                  className="flex items-center gap-2 cursor-pointer"
-                >
-                  <RadioGroupItem id="paid-raffle" value="paid" />
-                  Paid Raffle
-                </Label>
-              </div>
-            </RadioGroup>
-            {/* {formState.zodErrors?.raffleType && (
-              <ErrorMessage
-                message={formState.zodErrors?.raffleType}
-                className="p-0"
-              />
-            )} */}
-          </div>
-
-          {/* Paid state */}
-          {isPaidRaffle && (
-            <div className="grid gap-2 transition-all">
-              <Label htmlFor="price">Price</Label>
-              <Input
-                className="bg-transparent"
-                id="price"
-                name="price"
-                type="number"
-                placeholder="Enter amount"
-              />
-            </div>
-          )}
 
           {/* image  */}
           <div className="grid gap-2">
