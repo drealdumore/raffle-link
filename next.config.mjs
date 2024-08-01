@@ -1,28 +1,10 @@
-// /** @type {import('next').NextConfig} */
-// const nextConfig = {
-//   images: {
-//     // domains: ['*'],
-//     domains: ["example.com", "anotherdomain.com"],
-//     remotePatterns: [
-//       {
-//         protocol: "https",
-//         hostname: "avatars.githubusercontent.com",
-//         port: "",
-//         pathname: "/u/**",
-//       },
-//     ],
-//   },
-// };
-
-// export default nextConfig;
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     domains: [
       "example.com",
       "anotherdomain.com",
-      "lh3.googleusercontent.com", // Add Google user content domain
+      "lh3.googleusercontent.com",
       "avatars.githubusercontent.com",
     ],
     remotePatterns: [
@@ -38,7 +20,6 @@ const nextConfig = {
         port: "",
         pathname: "/a/**",
       },
-      // Add other patterns as needed
     ],
   },
 };

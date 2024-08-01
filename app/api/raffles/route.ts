@@ -9,17 +9,17 @@ export const POST = async (req: NextRequest) => {
   try {
     await connectMongoDB();
 
-  const session = await getServerSession(options);
-  // const session = await getServerSession();
+    const session = await getServerSession(options);
+    // const session = await getServerSession();
 
-// TODO -  fix the AUTH FIRST.
-//? ADD PROVIDER USER TO DB THEN USE THEIR ID AS CREATED BY
+    // TODO -  fix the AUTH FIRST.
+    //? ADD PROVIDER USER TO DB THEN USE THEIR ID AS CREATED BY
 
     if (!session || !session.user) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const userId = session.user?.id;
+    // const userId = session.user?.id;
 
     const { title, description, startDate, endDate } = await req.json();
 
@@ -34,7 +34,7 @@ export const POST = async (req: NextRequest) => {
       description,
       startDate,
       endDate,
-      createdBy: userId,
+      // createdBy: userId,
       participants: [],
     });
 

@@ -25,42 +25,31 @@ import { Input } from "../ui/input";
 import { createRaffleAction } from "@/app/actions/raffle.action";
 
 import ErrorMessage from "../shared/errorMessage";
-
-interface FormState {
-  data: any;
-  zodErrors: {
-    raffleName?: string;
-    raffleDescription?: string;
-  } | null;
-  message: string | null;
-}
-
-const INITIAL_STATE: FormState = {
-  data: null,
-  zodErrors: null,
-  message: null,
-};
+import { useEdgeStore } from "@/app/utils/edgestore";
+import Link from "next/link";
 
 export default function CreateForm() {
-  const [isPaidRaffle, setIsPaidRaffle] = useState(false);
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState(null);
+  const [file, setFile] = useState<File>();
+  const [progress, setProgress] = useState(0);
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(addDays(new Date(), 5));
   const [endDateValid, setEndDateValid] = useState("");
 
+  const [urls, setUrls] = useState<{
+    url: string;
+    thumbnail: string | null;
+  }>();
+
+  const { edgestore } = useEdgeStore();
 
   // TODO - UPLOAD IMAGE TO CLOUD THEN SAVE URL
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
+
   const [message, setMessage] = useState("");
   // const { userId } = useAuth();
-
-  const [formState, setFormState] = useState(INITIAL_STATE);
-
-  console.log(formState);
 
   // const handleImageUpload = (e: any) => {
   //   setImage(URL.createObjectURL(e.target.files[0]));
@@ -125,7 +114,8 @@ export default function CreateForm() {
     }
   };
 
-  const createRaffle = async () => {
+  const createRaffle = async (event: React.FormEvent) => {
+    event.preventDefault();
     // try {
     //   const res = await fetch("/api/raffle", {
     //     method: "POST",
@@ -144,176 +134,215 @@ export default function CreateForm() {
   };
 
   return (
-    <Card className="md:w-full max-w-md mx-auto w-[95%] bg-white/20 ring-4 ring-gray-900/5">
-      <CardHeader className="border-b">
-        <CardTitle>Create Raffle</CardTitle>
-        <CardDescription>
-          Fill out the details below to create a new raffle draw.
-        </CardDescription>
-      </CardHeader>
+    <div>
+      <input type="file" onChange={(e) => setFile(e.target.files?.[0])} />
+      <div className="h-[6px] w-44 border rounded overflow-hidden">
+        <div
+          style={{ width: `${progress}% ` }}
+          className="h-full bg-white transition-all duration-150"
+        ></div>
+      </div>
+      <Button
+        onClick={async () => {
+          if (file) {
+            const res = await edgestore.myPublicImages.upload({
+              file,
+              onProgressChange: (progress) => {
+                setProgress(progress);
+              },
+            });
+            setUrls({
+              url: res.url,
+              thumbnail: res.thumbnailUrl,
+            });
+          }
+        }}
+      >
+        Upload
+      </Button>
 
-      <CardContent className="pt-3">
-        <form className="grid gap-4" onSubmit={createRaffle}>
-          {/* Raffle title */}
-          <div className="grid gap-2">
-            <Label htmlFor="raffle-name">Raffle Name</Label>
+      {urls?.url && (
+        <Link href={urls.url} target="_blank">
+          URL
+        </Link>
+      )}
+      {urls?.thumbnail && (
+        <Link href={urls.thumbnail} target="_blank">
+          thumbnail
+        </Link>
+      )}
+    </div>
 
-            <Input
-              className="custom"
-              id="raffle-name"
-              name="raffleName"
-              placeholder="Enter raffle name"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-            {formState.zodErrors?.raffleName && (
-              <ErrorMessage
-                message={formState.zodErrors?.raffleName}
-                className="p-0"
-              />
-            )}
-          </div>
+    // <Card className="md:w-full max-w-md mx-auto w-[95%] bg-white/20 ring-4 ring-gray-900/5">
+    //   <CardHeader className="border-b">
+    //     <CardTitle>Create Raffle</CardTitle>
+    //     <CardDescription>
+    //       Fill out the details below to create a new raffle draw.
+    //     </CardDescription>
+    //   </CardHeader>
 
-          {/* Raffle description */}
-          <div className="grid gap-2">
-            <Label htmlFor="raffle-description">Raffle Description</Label>
-            <Textarea
-              id="raffle-description"
-              name="raffleDescription"
-              placeholder="Describe the raffle"
-              rows={3}
-              className="custom"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {formState.zodErrors?.raffleDescription && (
-              <ErrorMessage
-                message={formState.zodErrors?.raffleDescription}
-                className="p-0"
-              />
-            )}
-          </div>
+    //   <CardContent className="pt-3">
+    //     <form className="grid gap-4" onSubmit={createRaffle}>
+    //       {/* Raffle title */}
+    //       <div className="grid gap-2">
+    //         <Label htmlFor="raffle-name">Raffle Name</Label>
 
-          {/* Dates */}
-          <div className="grid gap-2">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2">
-                <Label className="font-bdog" htmlFor="start-date">
-                  Start Date
-                </Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
-                    >
-                      <span className="font-semibold uppercase text-[0.65rem]">
-                        Start Date
-                      </span>
-                      <span className="font-normal">
-                        {startDate ? (
-                          format(startDate, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
-                    <Calendar
-                      mode="single"
-                      selected={startDate}
-                      onSelect={handleStartDateChange}
-                      required
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="end-date">End Date</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
-                    >
-                      <span className="font-semibold uppercase text-[0.65rem]">
-                        End Date
-                      </span>
-                      <span className="font-normal">
-                        {endDate ? (
-                          format(endDate, "PPP")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </span>
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
-                    <Calendar
-                      mode="single"
-                      selected={endDate}
-                      onSelect={handleEndDateChange}
-                      required
-                    />
-                  </PopoverContent>
-                </Popover>
-              </div>
-            </div>
-            {/* {formState.zodErrors?.startDate && (
-              <ErrorMessage message={formState.zodErrors.startDate} className="p-0" /> 
-            )}
-            {formState.zodErrors?.endDate && (
-              <ErrorMessage message={formState.zodErrors.endDate} className="p-0" /> 
-            )} */}
-            {endDateValid && (
-              <ErrorMessage message={endDateValid} className="p-0" />
-            )}
-          </div>
+    //         <Input
+    //           className="custom"
+    //           id="raffle-name"
+    //           name="raffleName"
+    //           placeholder="Enter raffle name"
+    //           value={title}
+    //           onChange={(e) => setTitle(e.target.value)}
+    //         />
+    //         {/* {formState.zodErrors?.raffleName && (
+    //           <ErrorMessage
+    //             message={formState.zodErrors?.raffleName}
+    //             className="p-0"
+    //           />
+    //         )} */}
+    //       </div>
 
-          {/* image  */}
-          <div className="grid gap-2">
-            <Label htmlFor="image">Upload Image</Label>
-            <Input
-              className="bg-transparent"
-              id="image"
-              name="image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-            />
-            {image && (
-              <div className="flex justify-center max-w-auto">
-                <img
-                  src={image}
-                  alt="Uploaded Image"
-                  width={200}
-                  height={200}
-                  className="object-contain border border-double rounded"
-                />
-              </div>
-            )}
-          </div>
+    //       {/* Raffle description */}
+    //       <div className="grid gap-2">
+    //         <Label htmlFor="raffle-description">Raffle Description</Label>
+    //         <Textarea
+    //           id="raffle-description"
+    //           name="raffleDescription"
+    //           placeholder="Describe the raffle"
+    //           rows={3}
+    //           className="custom"
+    //           value={description}
+    //           onChange={(e) => setDescription(e.target.value)}
+    //         />
+    //         {/* {formState.zodErrors?.raffleDescription && (
+    //           <ErrorMessage
+    //             message={formState.zodErrors?.raffleDescription}
+    //             className="p-0"
+    //           />
+    //         )} */}
+    //       </div>
 
-          {/* button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center   bg-neutral-900   text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
-          >
-            {loading && (
-              <>
-                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                  <div className="w-3 h-3 absolute   bg-neutral-900   transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                </div>
-              </>
-            )}
-            <span className="ml-1">
-              {loading ? "Creating..." : "Create Raffle"}
-            </span>
-          </button>
-        </form>
-      </CardContent>
-    </Card>
+    //       {/* Dates */}
+    //       <div className="grid gap-2">
+    //         <div className="grid grid-cols-2 gap-4">
+    //           <div className="grid gap-2">
+    //             <Label className="font-bdog" htmlFor="start-date">
+    //               Start Date
+    //             </Label>
+    //             <Popover>
+    //               <PopoverTrigger asChild>
+    //                 <Button
+    //                   variant="outline"
+    //                   className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
+    //                 >
+    //                   <span className="font-semibold uppercase text-[0.65rem]">
+    //                     Start Date
+    //                   </span>
+    //                   <span className="font-normal">
+    //                     {startDate ? (
+    //                       format(startDate, "PPP")
+    //                     ) : (
+    //                       <span>Pick a date</span>
+    //                     )}
+    //                   </span>
+    //                 </Button>
+    //               </PopoverTrigger>
+    //               <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
+    //                 <Calendar
+    //                   mode="single"
+    //                   selected={startDate}
+    //                   onSelect={handleStartDateChange}
+    //                   required
+    //                 />
+    //               </PopoverContent>
+    //             </Popover>
+    //           </div>
+    //           <div className="grid gap-2">
+    //             <Label htmlFor="end-date">End Date</Label>
+    //             <Popover>
+    //               <PopoverTrigger asChild>
+    //                 <Button
+    //                   variant="outline"
+    //                   className="flex-col items-start w-full h-auto hover:bg-transparent font-bdog custom"
+    //                 >
+    //                   <span className="font-semibold uppercase text-[0.65rem]">
+    //                     End Date
+    //                   </span>
+    //                   <span className="font-normal">
+    //                     {endDate ? (
+    //                       format(endDate, "PPP")
+    //                     ) : (
+    //                       <span>Pick a date</span>
+    //                     )}
+    //                   </span>
+    //                 </Button>
+    //               </PopoverTrigger>
+    //               <PopoverContent className="rounded-md border w-auto flex-col space-y-2 p-2">
+    //                 <Calendar
+    //                   mode="single"
+    //                   selected={endDate}
+    //                   onSelect={handleEndDateChange}
+    //                   required
+    //                 />
+    //               </PopoverContent>
+    //             </Popover>
+    //           </div>
+    //         </div>
+    //         {/* {formState.zodErrors?.startDate && (
+    //           <ErrorMessage message={formState.zodErrors.startDate} className="p-0" />
+    //         )}
+    //         {formState.zodErrors?.endDate && (
+    //           <ErrorMessage message={formState.zodErrors.endDate} className="p-0" />
+    //         )} */}
+    //         {endDateValid && (
+    //           <ErrorMessage message={endDateValid} className="p-0" />
+    //         )}
+    //       </div>
+
+    //       {/* image  */}
+    //       <div className="grid gap-2">
+    //         <Label htmlFor="image">Upload Image</Label>
+    //         <Input
+    //           className="bg-transparent"
+    //           id="image"
+    //           name="image"
+    //           type="file"
+    //           accept="image/*"
+    //           onChange={handleImageUpload}
+    //         />
+    //         {image && (
+    //           <div className="flex justify-center max-w-auto">
+    //             <img
+    //               src={image}
+    //               alt="Uploaded Image"
+    //               width={200}
+    //               height={200}
+    //               className="object-contain border border-double rounded"
+    //             />
+    //           </div>
+    //         )}
+    //       </div>
+
+    //       {/* button */}
+    //       <button
+    //         type="submit"
+    //         disabled={loading}
+    //         className="h-10 font-bdog truncate overflow-hidden w-full gap-2 font-medium group flex items-center justify-center   bg-neutral-900   text-white shadow-md shadow-black/5 transition-colors hover:bg-zinc-800 rounded-lg  disabled:text-neutral-200 disabled:pointer-events-none disabled:cursor-not-allowed "
+    //       >
+    //         {loading && (
+    //           <>
+    //             <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
+    //               <div className="w-3 h-3 absolute   bg-neutral-900   transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
+    //             </div>
+    //           </>
+    //         )}
+    //         <span className="ml-1">
+    //           {loading ? "Creating..." : "Create Raffle"}
+    //         </span>
+    //       </button>
+    //     </form>
+    //   </CardContent>
+    // </Card>
   );
 }

@@ -7,6 +7,7 @@ import Nav from "../components/shared/nav";
 import Footer from "@/components/shared/footer";
 import Spinner from "@/components/shared/spinner";
 import AuthProvider from "@/context/AuthProvider";
+import { EdgeStoreProvider } from "./utils/edgestore";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,10 +37,12 @@ export default function RootLayout({
         className={`${calSans.variable} ${BDOG.variable}  ${inter.className}`}
       >
         <AuthProvider>
-          <Nav />
-          <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
-            {children}
-          </main>
+          <EdgeStoreProvider>
+            <Nav />
+            <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
+              {children}
+            </main>
+          </EdgeStoreProvider>
         </AuthProvider>
       </body>
     </html>
