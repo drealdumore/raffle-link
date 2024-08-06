@@ -147,10 +147,12 @@ export default function CreateForm() {
           if (file) {
             const res = await edgestore.myPublicImages.upload({
               file,
+              input: { type: "post" },
               onProgressChange: (progress) => {
                 setProgress(progress);
               },
             });
+
             setUrls({
               url: res.url,
               thumbnail: res.thumbnailUrl,

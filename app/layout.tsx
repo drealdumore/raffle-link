@@ -39,7 +39,7 @@ export default function RootLayout({
         <AuthProvider>
           <EdgeStoreProvider>
             <Nav />
-            <main className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
+            <main className="container mx-auto flex max-w-5xl items-center justify-center px-4 py-2">
               {children}
             </main>
           </EdgeStoreProvider>
