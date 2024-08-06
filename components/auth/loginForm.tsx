@@ -10,29 +10,19 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "@/components/shared/errorMessage";
 import { Eye, Google } from "../design/icons";
 
-const schema = z
-  .object({
-    email: z
-      .string()
-      .nonempty("Email is required")
-      .email("Invalid email address"),
-    password: z
-      .string()
-      .nonempty("Password is required")
-      .min(6, "Password must be at least 6 characters")
-      .max(100, "Password must be at most 100 characters"),
-    passwordConfirm: z
-      .string()
-      .nonempty("Password confirmation is required")
-      .min(6, "Password must be at least 6 characters")
-      .max(100, "Password must be at most 100 characters"),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "Passwords do not match",
-    path: ["passwordConfirm"],
-  });
+const schema = z.object({
+  email: z
+    .string()
+    .nonempty("Email is required")
+    .email("Invalid email address"),
+  password: z
+    .string()
+    .nonempty("Password is required")
+    .min(6, "Password must be at least 6 characters")
+    .max(100, "Password must be at most 100 characters"),
+});
 
-export default function Register() {
+export default function Login() {
   const {
     register,
     handleSubmit,
@@ -44,7 +34,6 @@ export default function Register() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
   const router = useRouter();
 
@@ -52,7 +41,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await fetch("/api/users/register", {
+      const response = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -65,9 +54,10 @@ export default function Register() {
       setMessage(result.message);
 
       if (response.ok) {
+        localStorage.setItem("token", data.token);
+        setMessage("Login successful");
         setLoading(false);
-        setMessage("Register successful");
-        router.push("/login");
+        router.push("/raffle/new");
       } else {
         setLoading(false);
       }
@@ -82,10 +72,10 @@ export default function Register() {
       <div className="w-full sm:w-[25rem] mx-auto bg-white/20 ring-4 ring-gray-900/5 rounded-lg border text-card-foreground shadow-sm max-w-sm">
         <div className="flex flex-col p-6 space-y-1.5">
           <h3 className="text-2xl font-cal leading-none tracking-tight">
-            Register
+            Login
           </h3>
           <p className="text-sm font-bdog text-muted-foreground">
-            Sign up for your RaffleLink account
+            Log in to your RaffleLink account
           </p>
         </div>
         <div className="p-6 pt-0">
@@ -159,48 +149,6 @@ export default function Register() {
               )}
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <input
-                  className={`flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 ${
-                    errors.passwordConfirm
-                      ? "border-red-500 ring-2 ring-red-400"
-                      : "border-input"
-                  }`}
-                  type={showPasswordConfirm ? "text" : "password"}
-                  placeholder="••••••••"
-                  {...register("passwordConfirm")}
-                />
-                <span
-                  onClick={() => setShowPasswordConfirm((prev) => !prev)}
-                  className="absolute top-[9px] right-2 cursor-pointer select-none"
-                >
-                  <div className="relative inline-flex items-center justify-center">
-                    <>
-                      <div
-                        className={
-                          "left-1/2 inline-flex items-center justify-center transition-all duration-200 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full w-[2px] -rotate-45 bg-black dark:bg-white absolute z-10 " +
-                          (showPasswordConfirm
-                            ? "h-0 outline-none"
-                            : "h-5 outline-2 outline outline-neutral-100 dark:outline-neutral-800 dark:group-hover:outline-neutral-700 group-hover:outline-neutral-200")
-                        }
-                      />
-                      <Eye class="flex-shrink-0" size={23} />
-                    </>
-                  </div>
-                </span>
-              </div>
-              {errors.passwordConfirm && (
-                <ErrorMessage
-                  message={String(errors.passwordConfirm.message)}
-                  className="h-7"
-                />
-              )}
-            </div>
-
             <button
               type="submit"
               disabled={loading}
@@ -211,9 +159,7 @@ export default function Register() {
                   <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
                 </div>
               )}
-              <span className="ml-1">
-                {loading ? "Processing..." : "Register"}
-              </span>
+              <span className="ml-1">{loading ? "Loading..." : "Login"}</span>
             </button>
           </form>
 
@@ -227,15 +173,16 @@ export default function Register() {
         </div>
 
         <div className="flex items-center justify-between p-6 pt-0 font-bdog text-muted-foreground">
-          <p className="text-sm">Already have an account?</p>
+          <p className="text-sm">Dont have an account?</p>
           <Link
-            href="/login"
+            href="/register"
             className="inline-flex items-center justify-center underline text-sm hover:text-neutral-900 hover:underline-offset-4"
           >
-            Log in
+            Sign up
           </Link>
         </div>
       </div>
     </div>
   );
 }
+
