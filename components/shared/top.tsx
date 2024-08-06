@@ -6,7 +6,7 @@ import React from "react";
 const Nav = () => {
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
-      <Link href="/">
+      <Link href="/" data-prefetch="/">
         <div className="text-xl font-cal flex justify-center  gap-1 text-neutral-800">
           <LinkIcon />
           <p>RaffleLink.</p>
@@ -14,6 +14,7 @@ const Nav = () => {
       </Link>
       <nav className="flex gap-6">
         <Link
+          data-prefetch="https://twitter.com/drealdumore"
           href="https://twitter.com/drealdumore"
           target="_blank"
           rel="noopener noreferrer"
@@ -22,6 +23,7 @@ const Nav = () => {
           <TwitterIcon />
         </Link>
         <Link
+          data-prefetch="https://github.com/Drealdumore/"
           href="https://github.com/Drealdumore/"
           target="_blank"
           rel="noopener noreferrer"

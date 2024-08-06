@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { z } from "zod";
@@ -36,6 +36,10 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
 
   const router = useRouter();
+
+  // useEffect(() => {
+  //   router.prefetch("/register");
+  // }, [router]);
 
   const onSubmit = async (data: any) => {
     setLoading(true);
@@ -175,6 +179,7 @@ export default function Login() {
         <div className="flex items-center justify-between p-6 pt-0 font-bdog text-muted-foreground">
           <p className="text-sm">Dont have an account?</p>
           <Link
+          data-prefetch="/register"
             href="/register"
             className="inline-flex items-center justify-center underline text-sm hover:text-neutral-900 hover:underline-offset-4"
           >
@@ -185,4 +190,3 @@ export default function Login() {
     </div>
   );
 }
-

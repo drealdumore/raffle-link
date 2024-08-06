@@ -20,7 +20,7 @@ const Nav = async () => {
 
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
-      <Link href="/">
+      <Link href="/" data-prefetch="/">
         <div className="md:text-xl select-none font-cal flex justify-center gap-1 text-neutral-800">
           <LinkIcon />
           <p>RaffleLink.</p>
@@ -30,13 +30,14 @@ const Nav = async () => {
       <nav className="flex gap-6">
         {!session ? (
           <Link
+            data-prefetch="/login"
             href="/login"
             className="p-2 bg-neutral-900 rounded-md flex justify-center items-center gap-2 transition-all hover:bg-zinc-800 text-white"
           >
             Create Raffle
           </Link>
         ) : session.user?.image ? (
-          <Link rel="prefetch" href="/profile">
+          <Link rel="prefetch" href="/profile" data-prefetch="/profile">
             <Image
               src={session.user.image}
               alt="image"
@@ -50,6 +51,7 @@ const Nav = async () => {
             <Link
               rel="prefetch"
               href="/profile"
+              data-prefetch="/profile"
               className="hover:underline hover:underline-offset-2"
             >
               Profile

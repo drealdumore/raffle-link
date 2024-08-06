@@ -230,6 +230,7 @@ export default function Register() {
           <p className="text-sm">Already have an account?</p>
           <Link
             href="/login"
+            data-prefetch="/login"
             className="inline-flex items-center justify-center underline text-sm hover:text-neutral-900 hover:underline-offset-4"
           >
             Log in

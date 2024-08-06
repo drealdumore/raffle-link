@@ -100,6 +100,7 @@ const page = () => {
           <Link
             className="flex py-8 custom rounded-md px-2 items-center justify-center gap-1.5 border border-dashed border-gray-200 bg-surface-100 font-medium text-secondary outline-none focus-visible:ring-2 focus-visible:ring-gray-200 "
             href="/raffle/new"
+            data-prefetch="/raffle/new"
           >
             <PlusSignIcon className="shrink-0 overflow-visible size-5" />
             Create raffle

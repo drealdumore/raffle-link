@@ -169,7 +169,7 @@ export default function CreateForm() {
         </Link>
       )}
       {urls?.thumbnail && (
-        <Link href={urls.thumbnail} target="_blank">
+        <Link href={urls.thumbnail}  target="_blank">
           thumbnail
         </Link>
       )}

@@ -6,7 +6,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="container sticky mx-3 flex max-w-5xl flex-col gap-3 px-4 py-2">
-      <Link href="/">
+      <Link href="/" data-prefetch="/">
         <div className="text-xl font-cal flex   gap-1 text-neutral-800">
           <LinkIcon />
           <p>RaffleLink.</p>
@@ -18,6 +18,7 @@ const Footer = () => {
         Made with 📎 by{" "}
         <Link
           href="https://x.com/Drealdumore/"
+          data-prefetch="https://x.com/Drealdumore/"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex underline"
