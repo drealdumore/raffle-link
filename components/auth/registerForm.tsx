@@ -98,9 +98,9 @@ export default function Register() {
                 Email
               </label>
               <input
-                className={`flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
+                className={`custom flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 ${
                   errors.email
-                    ? "border-red-500 ring-2 ring-red-400"
+                    ? "border-red-500 ring-2 ring-red-400 placeholder:text-red-400"
                     : "border-input"
                 }`}
                 type="email"
@@ -122,9 +122,9 @@ export default function Register() {
               </label>
               <div className="relative">
                 <input
-                  className={`flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 ${
+                  className={`custom flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 ${
                     errors.password
-                      ? "border-red-500 ring-2 ring-red-400"
+                      ? "border-red-500 ring-2 ring-red-400 placeholder:text-red-400"
                       : "border-input"
                   }`}
                   type={showPassword ? "text" : "password"}
@@ -140,10 +140,10 @@ export default function Register() {
                     <>
                       <div
                         className={
-                          "left-1/2 inline-flex items-center justify-center transition-all duration-200 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full w-[2px] -rotate-45 bg-black dark:bg-white absolute z-10 " +
+                          "left-1/2 inline-flex items-center justify-center transition-all duration-200 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full w-[2px] -rotate-45 bg-black  absolute z-10 " +
                           (showPassword
                             ? "h-0 outline-none"
-                            : "h-5 outline-2 outline outline-neutral-100 dark:outline-neutral-800 dark:group-hover:outline-neutral-700 group-hover:outline-neutral-200")
+                            : "h-5 outline-2 outline outline-neutral-900/5")
                         }
                       />
                       <Eye class="flex-shrink-0" size={23} />
@@ -165,9 +165,9 @@ export default function Register() {
               </label>
               <div className="relative">
                 <input
-                  className={`flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 ${
+                  className={`custom flex h-10 w-full rounded-md border bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 pr-10 ${
                     errors.passwordConfirm
-                      ? "border-red-500 ring-2 ring-red-400"
+                      ? "border-red-500 ring-2 ring-red-400 placeholder:text-red-400"
                       : "border-input"
                   }`}
                   type={showPasswordConfirm ? "text" : "password"}
@@ -182,10 +182,10 @@ export default function Register() {
                     <>
                       <div
                         className={
-                          "left-1/2 inline-flex items-center justify-center transition-all duration-200 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full w-[2px] -rotate-45 bg-black dark:bg-white absolute z-10 " +
+                          "left-1/2 inline-flex items-center justify-center transition-all duration-200 -translate-x-1/2 top-1/2 -translate-y-1/2 rounded-full w-[2px] -rotate-45 bg-black absolute z-10 " +
                           (showPasswordConfirm
                             ? "h-0 outline-none"
-                            : "h-5 outline-2 outline outline-neutral-100 dark:outline-neutral-800 dark:group-hover:outline-neutral-700 group-hover:outline-neutral-200")
+                            : "h-5 outline-2 outline outline-neutral-900/5")
                         }
                       />
                       <Eye class="flex-shrink-0" size={23} />

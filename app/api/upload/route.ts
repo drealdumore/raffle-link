@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import cloudinary from "cloudinary";
 
-// Configure Cloudinary with your credentials
 cloudinary.v2.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -20,9 +19,9 @@ export default async function handler(
         return res.status(400).json({ error: "No image provided" });
       }
 
-      // Upload the image to Cloudinary
+      // Upload the image 
       const result = await cloudinary.v2.uploader.upload(image, {
-        folder: "your-folder-name", // Optional: specify a folder in Cloudinary
+        folder: "your-folder-name", 
       });
 
       // Return the image URL

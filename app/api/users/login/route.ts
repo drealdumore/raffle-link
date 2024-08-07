@@ -39,11 +39,15 @@ export async function POST(request: NextRequest) {
       expiresIn: process.env.JWT_EXPIRES_IN,
     });
 
-    return NextResponse.json({ token }, { status: 200 });
-  } catch (error) {
+    return NextResponse.json(
+      { message: "User created successfully", token },
+      { status: 200 }
+    );
+    
+  } catch (error: any) {
     console.error("Error during login:", error);
     return NextResponse.json(
-      { message: "Something went wrong" },
+      { message: "Something went wrong", error: error.message },
       { status: 500 }
     );
   }

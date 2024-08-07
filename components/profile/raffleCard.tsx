@@ -167,7 +167,7 @@ const RaffleCard = ({ raffleData }: { raffleData: Raffle }) => {
             <div className="space-y-1">
               <h3 className="font-medium">
                 <a
-                  className="line-clamp-3 outline-none after:absolute after:inset-0 after:z-1 after:rounded-xl focus-visible:text-purple focus-visible:after:ring-2 focus-visible:after:ring-gray-200 dark:focus-visible:after:ring-gray-700"
+                  className="line-clamp-3 outline-none after:absolute after:inset-0 after:z-1 after:rounded-xl focus-visible:text-purple focus-visible:after:ring-2 focus-visible:after:ring-gray-200 "
                   href="/apps/app_2jexKHoVvUdJoQSXeqXL94Om1ec/instances/ins_2jexKTk8jADrf6DXh4zl9m5qKf1"
                 >
                   {raffleData.title}

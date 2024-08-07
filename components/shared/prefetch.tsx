@@ -4,7 +4,8 @@ import usePrefetch from "@/hooks/usePrefetch ";
 
 const Prefetch = () => {
   usePrefetch();
-  return null; // This component doesn't render anything itself
+  
+  return null;
 };
 
 export default Prefetch;
