@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "@/components/shared/errorMessage";
 import { Eye, Google } from "../design/icons";
+import { ButtonLoader } from "../design/loaders";
 
 const schema = z
   .object({
@@ -206,11 +207,7 @@ export default function Register() {
               disabled={loading}
               className="h-10 flex items-center justify-center gap-2 w-full text-sm font-medium text-white bg-neutral-900 rounded-lg shadow-md transition-colors hover:bg-zinc-800 disabled:pointer-events-none disabled:cursor-not-allowed disabled:text-neutral-200"
             >
-              {loading && (
-                <div className="w-4 h-4 border-2 border-white rounded-full animate-spin relative ml-2">
-                  <div className="w-3 h-3 absolute bg-neutral-900 transition-colors group-hover:bg-zinc-800 z-10 top-1 left-1"></div>
-                </div>
-              )}
+              {loading && <ButtonLoader />}
               <span className="ml-1">
                 {loading ? "Processing..." : "Register"}
               </span>

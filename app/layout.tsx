@@ -4,7 +4,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Nav from "../components/shared/nav";
 import Footer from "@/components/shared/footer";
-import Spinner from "@/components/shared/spinner";
 import AuthProvider from "@/context/AuthProvider";
 import Prefetch from "@/components/shared/prefetch";
 

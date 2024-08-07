@@ -35,15 +35,30 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    });
+    // const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, {
+    //   expiresIn: process.env.JWT_EXPIRES_IN,
+    // });
+
+    // Include user information in the JWT payload
+    const token = jwt.sign(
+      {
+        userId: user._id,
+        name: user.name,
+        email: user.email,
+        image: user.image, // Assuming you store user image URL in the user document
+      },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: process.env.JWT_EXPIRES_IN,
+      }
+    );
+
+    console.log(token);
 
     return NextResponse.json(
-      { message: "User created successfully", token },
+      { message: "Login successfully", token },
       { status: 200 }
     );
-    
   } catch (error: any) {
     console.error("Error during login:", error);
     return NextResponse.json(

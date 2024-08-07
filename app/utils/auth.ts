@@ -28,3 +28,43 @@ export const createJWT = (userId: string) => {
 export const verifyJWT = (token: string) => {
   return jwt.verify(token, JWT_SECRET);
 };
+
+export const isLoggedIn = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return false;
+
+  try {
+    const decoded = jwt.decode(token);
+    return !!decoded;
+  } catch (error) {
+    return false;
+  }
+};
+
+// export const isUserLoggedIn = () => {
+//   const token =
+//     typeof window !== "undefined" ? localStorage.getItem("token") : null;
+//   if (!token) return null;
+
+//   try {
+//     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+//     return decoded;
+//   } catch (error) {
+//     return null;
+//   }
+// };
+
+
+
+export const isUserLoggedIn = () => {
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  if (!token) return null;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    return decoded; // assuming the token contains user details like name and image
+  } catch (error) {
+    return null;
+  }
+};
+

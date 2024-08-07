@@ -1,6 +1,4 @@
-import { options } from "@/app/api/auth/[...nextauth]/options";
-import { getServerSession } from "next-auth/next";
-import { useSession } from "next-auth/react";
+import { isUserLoggedIn } from "@/app/utils/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -15,8 +13,8 @@ type User =
   | undefined;
 
 const Nav = async () => {
-  const session = await getServerSession(options);
-  console.log("session: ", session);
+  const user = isUserLoggedIn();
+  console.log("user: ", user);
 
   return (
     <header className="container mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
@@ -28,7 +26,7 @@ const Nav = async () => {
       </Link>
 
       <nav className="flex gap-6">
-        {!session ? (
+        {!user ? (
           <Link
             data-prefetch="/login"
             href="/login"
@@ -36,10 +34,10 @@ const Nav = async () => {
           >
             Create Raffle
           </Link>
-        ) : session.user?.image ? (
+        ) : user ? (
           <Link rel="prefetch" href="/profile" data-prefetch="/profile">
             <Image
-              src={session.user.image}
+              src="/assets/bio.jpg"
               alt="image"
               height={45}
               width={45}
