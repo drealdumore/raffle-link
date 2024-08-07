@@ -79,8 +79,8 @@ export default function Register() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 p-24 duration-150 transition-all">
-      <div className="w-full sm:w-[25rem] mx-auto bg-white/20 ring-4 ring-gray-900/5 rounded-lg border text-card-foreground shadow-sm max-w-sm">
+    <div className="flex flex-col items-center justify-center gap-4 sm:p-24 duration-150 transition-all">
+      <div className=" max-w-md sm:w-[25rem] mx-auto bg-white/20 ring-4 ring-gray-900/5 rounded-lg border text-card-foreground shadow-sm">
         <div className="flex flex-col p-6 space-y-1.5">
           <h3 className="text-2xl font-cal leading-none tracking-tight">
             Register

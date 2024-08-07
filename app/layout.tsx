@@ -37,7 +37,7 @@ export default function RootLayout({
         <AuthProvider>
           <Prefetch />
           <Nav />
-          <main className="container mx-auto flex max-w-5xl items-center justify-center px-4 py-2">
+          <main className="container h-screen mx-auto flex max-w-5xl items-center justify-center px-4 py-2">
             {children}
           </main>
         </AuthProvider>
